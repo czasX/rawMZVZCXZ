@@ -1,20 +1,21 @@
 <!DOCTYPE html>
-<html>
+<html lang="vi">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PasteBin</title>
+    <title>📋 PasteBin</title>
     <style>
         *{margin:0;padding:0;box-sizing:border-box}
-        body{background:#0a0a0a;color:#ccc;font-family:monospace;padding:20px}
-        .w{max-width:900px;margin:0 auto}
-        .h{display:flex;justify-content:space-between;padding:12px 16px;background:#111;border:1px solid #222;border-radius:8px;margin-bottom:16px}
-        .h .l{font-size:20px;font-weight:700;color:#fff}
+        body{background:#0a0a0a;color:#ccc;font-family:'Courier New',monospace;padding:20px;min-height:100vh}
+        .w{max-width:1000px;margin:0 auto}
+        .h{display:flex;justify-content:space-between;align-items:center;padding:12px 20px;background:#111;border:1px solid #222;border-radius:10px;margin-bottom:16px;flex-wrap:wrap;gap:8px}
+        .h .l{font-size:22px;font-weight:700;color:#fff}
         .h .l span{color:#6c5ce7}
-        textarea{width:100%;min-height:400px;padding:14px;background:#111;border:1px solid #222;border-radius:8px;color:#e0e0e0;font-family:monospace;font-size:14px;line-height:1.7;resize:vertical;outline:none}
-        textarea:focus{border-color:#6c5ce7}
-        .tb{display:flex;gap:6px;flex-wrap:wrap;margin:10px 0}
-        .tb button{padding:8px 18px;border:none;border-radius:6px;font-weight:600;font-size:13px;cursor:pointer;font-family:monospace}
+        .h .s{font-size:13px;color:#555;display:flex;gap:16px}
+        .h .s b{color:#fff}
+        
+        .tb{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0}
+        .tb button{padding:8px 18px;border:none;border-radius:8px;font-weight:600;font-size:13px;cursor:pointer;font-family:inherit}
         .sv{background:#6c5ce7;color:#fff}
         .sv:hover{background:#5a4bd1}
         .cp{background:#2a2a2a;color:#fff}
@@ -23,73 +24,358 @@
         .dl:hover{background:#00a381}
         .cl{background:#e74c3c;color:#fff}
         .cl:hover{background:#c0392b}
+        .up{background:#fdcb6e;color:#000}
+        .up:hover{background:#f5b820}
+        
+        textarea{width:100%;min-height:400px;padding:14px;background:#111;border:1px solid #222;border-radius:8px;color:#e0e0e0;font-family:monospace;font-size:14px;line-height:1.8;resize:vertical;outline:none}
+        textarea:focus{border-color:#6c5ce7}
+        textarea::placeholder{color:#444}
+        
         .lb{background:#111;border:1px solid #222;border-radius:8px;padding:10px 14px;margin:10px 0;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px}
-        .lb .url{color:#6c5ce7;word-break:break-all;font-size:13px;flex:1}
-        .lb button{padding:4px 14px;border:none;border-radius:6px;background:#2a2a2a;color:#fff;cursor:pointer;font-family:monospace}
+        .lb .url{color:#6c5ce7;word-break:break-all;font-size:13px;flex:1;font-family:monospace}
+        .lb button{padding:4px 14px;border:none;border-radius:6px;background:#2a2a2a;color:#fff;cursor:pointer;font-family:inherit}
         .lb button:hover{background:#3a3a3a}
-        .fl{max-height:300px;overflow-y:auto;margin-top:12px}
-        .it{display:flex;padding:6px 12px;border-bottom:1px solid #1a1a1a;gap:8px;cursor:pointer}
+        
+        .fl{max-height:350px;overflow-y:auto;margin-top:12px;border:1px solid #222;border-radius:8px;background:#111}
+        .fl::-webkit-scrollbar{width:4px}
+        .fl::-webkit-scrollbar-thumb{background:#222;border-radius:4px}
+        
+        .it{display:flex;align-items:center;padding:8px 14px;border-bottom:1px solid #1a1a1a;gap:10px;cursor:pointer}
         .it:hover{background:rgba(255,255,255,0.02)}
-        .it .id{color:#6c5ce7;min-width:40px}
+        .it .id{color:#6c5ce7;min-width:50px;font-weight:600}
         .it .nm{flex:1}
-        .it .x{cursor:pointer;color:#555}
+        .it .sz{color:#555;font-size:12px}
+        .it .rw{color:#00b894;text-decoration:none;font-size:12px;padding:2px 10px;border:1px solid #00b894;border-radius:4px}
+        .it .rw:hover{background:#00b894;color:#000}
+        .it .x{background:0 0;border:none;color:#555;cursor:pointer;font-size:14px;padding:0 4px}
         .it .x:hover{color:#e74c3c}
+        
         .e{text-align:center;padding:30px;color:#444}
-        .toasts{position:fixed;bottom:20px;right:20px;z-index:999}
-        .toast{padding:8px 16px;border-radius:6px;font-size:13px;background:#111;border:1px solid #222;margin-top:4px}
+        .e .big{font-size:40px;display:block;opacity:0.2;margin-bottom:10px}
+        
+        .toasts{position:fixed;bottom:20px;right:20px;z-index:999;display:flex;flex-direction:column;gap:4px}
+        .toast{padding:8px 16px;border-radius:6px;font-size:13px;background:#111;border:1px solid #222;animation:slide .25s ease}
         .toast.ok{border-color:#00b894;color:#00b894}
         .toast.err{border-color:#e74c3c;color:#e74c3c}
         .toast.inf{border-color:#6c5ce7;color:#6c5ce7}
+        @keyframes slide{from{transform:translateX(30px);opacity:0}to{transform:translateX(0);opacity:1}}
+        
+        input[type="file"]{display:none}
+        
+        @media(max-width:600px){body{padding:12px}.h{padding:10px 14px}.h .l{font-size:18px}.tb button{padding:6px 12px;font-size:12px}}
     </style>
 </head>
 <body>
 <div class="w">
 
 <div class="h">
-    <div class="l">📋 <span>Paste</span></div>
-    <div style="color:#555"><b id="t">0</b></div>
+    <div class="l">📋 <span>PasteBin</span></div>
+    <div class="s"><span>📄 <b id="t">0</b></span><span>🔢 <b id="nid">1</b></span></div>
 </div>
 
-<textarea id="cd" placeholder="Dán code..."></textarea>
+<textarea id="cd" placeholder="Dán code vào đây..."></textarea>
 
 <div class="tb">
-    <button class="sv" onclick="sv()">💾 Paste</button>
+    <button class="sv" onclick="sv()">💾 Tạo Paste</button>
     <button class="cp" onclick="cp()">📋 Copy</button>
-    <button class="dl" onclick="dl()">⬇️ DL</button>
-    <button class="cl" onclick="cl()">🗑️</button>
+    <button class="dl" onclick="dl()">⬇️ Download</button>
+    <button class="up" onclick="document.getElementById('fileInput').click()">📂 Từ tệp</button>
+    <button class="cl" onclick="cl()">🗑️ Clear</button>
+    <input type="file" id="fileInput" onchange="loadFile(event)">
 </div>
 
 <div id="linkArea" style="display:none">
     <div class="lb">
         <span class="url" id="shareUrl">...</span>
-        <button onclick="cs()">Copy</button>
+        <button onclick="cs()">📋 Copy</button>
         <button onclick="document.getElementById('linkArea').style.display='none'">✖</button>
     </div>
 </div>
 
-<div class="fl" id="fl"><div class="e">📭 Empty</div></div>
+<div class="fl" id="fl"><div class="e"><span class="big">📭</span>Chưa có paste nào</div></div>
 
 </div>
-<div class="toasts" id="ts"></div>
 
 <script>
-let pastes=[],editId=null;
-function ld(){try{const d=localStorage.getItem('p');if(d)pastes=JSON.parse(d)}catch{}r()}
-function sd(){localStorage.setItem('p',JSON.stringify(pastes));r()}
-function gn(){if(!pastes.length)return 1;const ids=pastes.map(f=>f.id).sort((a,b)=>a-b);let n=1;for(const id of ids){if(id===n)n++;else break}return n}
-function r(){const list=document.getElementById('fl');document.getElementById('t').textContent=pastes.length;if(!pastes.length){list.innerHTML='<div class="e">📭 Empty</div>';return}const s=[...pastes].sort((a,b)=>b.id-a.id);list.innerHTML=s.map(f=>`<div class="it" onclick="lf(${f.id})"><span class="id">#${f.id}</span><span class="nm">${esc(f.name||'untitled')}</span><span style="color:#555;font-size:12px">${(f.content||'').length}c</span><span class="x" onclick="event.stopPropagation();df(${f.id})">🗑️</span></div>`).join('')}
-function esc(t){const d=document.createElement('div');d.textContent=t;return d.innerHTML}
-function sv(){const c=document.getElementById('cd').value;if(!c.trim()){t('Empty!','err');return}const n=document.getElementById('fn')?.value?.trim()||'untitled';if(editId){const idx=pastes.findIndex(f=>f.id===editId);if(idx!==-1){pastes[idx]={...pastes[idx],name:n,content:c,updated:Date.now()};t('Updated #'+editId,'ok')}editId=null}else{const id=gn();pastes.push({id,name:n,content:c,created:Date.now(),updated:Date.now()});t('Created #'+id,'ok')}sd();const url=window.location.href.split('?')[0]+'?p='+pastes[pastes.length-1].id;document.getElementById('shareUrl').textContent=url;document.getElementById('linkArea').style.display='block';document.getElementById('cd').value='';r()}
-function lf(id){const f=pastes.find(x=>x.id===id);if(!f)return;editId=id;document.getElementById('cd').value=f.content;document.getElementById('linkArea').style.display='none';t('Loaded #'+id,'inf')}
-function df(id){if(!confirm('Delete #'+id+'?'))return;pastes=pastes.filter(x=>x.id!==id);sd();if(editId===id){editId=null;document.getElementById('linkArea').style.display='none'}t('Deleted','err')}
-function cl(){if(document.getElementById('cd').value&&!confirm('Clear?'))return;document.getElementById('cd').value='';editId=null;document.getElementById('linkArea').style.display='none';t('Cleared','inf')}
-function cp(){const c=document.getElementById('cd').value;if(!c){t('Empty!','err');return}navigator.clipboard?.writeText(c).then(()=>t('Copied!','ok')).catch(()=>{const ta=document.createElement('textarea');ta.value=c;document.body.appendChild(ta);ta.select();document.execCommand('copy');ta.remove();t('Copied!','ok')})}
-function dl(){const c=document.getElementById('cd').value;if(!c){t('Empty!','err');return}const blob=new Blob([c],{type:'text/plain'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='paste.txt';a.click();URL.revokeObjectURL(a.href);t('Downloaded','ok')}
-function cs(){const url=document.getElementById('shareUrl').textContent;if(!url||url==='...'){t('No link!','err');return}navigator.clipboard?.writeText(url).then(()=>t('Link copied!','ok')).catch(()=>{const ta=document.createElement('textarea');ta.value=url;document.body.appendChild(ta);ta.select();document.execCommand('copy');ta.remove();t('Link copied!','ok')})}
-function t(msg,type='inf'){const box=document.getElementById('ts');const el=document.createElement('div');el.className='toast '+type;const ic={ok:'✅',err:'❌',inf:'ℹ️'};el.innerHTML=ic[type]+' '+msg;box.appendChild(el);setTimeout(()=>{el.style.opacity='0';el.style.transform='translateX(30px)';el.style.transition='0.3s';setTimeout(()=>el.remove(),300)},2000)}
-function lfu(){const p=new URLSearchParams(window.location.search);const id=p.get('p');if(id){const f=pastes.find(x=>x.id===parseInt(id));if(f){document.getElementById('cd').value=f.content;t('Loaded #'+f.id,'ok');window.history.replaceState({},document.title,window.location.pathname)}}}
-document.addEventListener('keydown',e=>{if((e.ctrlKey||e.metaKey)&&e.key==='s'){e.preventDefault();sv()}if(e.key==='Escape'){document.getElementById('linkArea').style.display='none'}});
-ld();lfu();
+// ============================================================
+// DATA
+// ============================================================
+let pastes = [];
+let editId = null;
+let nextId = 1;
+
+// ============================================================
+// STORAGE
+// ============================================================
+function ld() {
+    try {
+        const d = localStorage.getItem('pbin');
+        if (d) {
+            const parsed = JSON.parse(d);
+            pastes = parsed.pastes || [];
+            nextId = parsed.nextId || (pastes.length ? Math.max(...pastes.map(f=>f.id)) + 1 : 1);
+        }
+    } catch { pastes = []; nextId = 1; }
+    r();
+}
+
+function sd() {
+    localStorage.setItem('pbin', JSON.stringify({ pastes, nextId }));
+    r();
+}
+
+// ============================================================
+// ID - TỰ TĂNG, KHÔNG TRÙNG
+// ============================================================
+function gn() {
+    return nextId++;
+}
+
+// ============================================================
+// RENDER
+// ============================================================
+function r() {
+    const list = document.getElementById('fl');
+    document.getElementById('t').textContent = pastes.length;
+    document.getElementById('nid').textContent = nextId;
+
+    if (!pastes.length) {
+        list.innerHTML = '<div class="e"><span class="big">📭</span>Chưa có paste nào</div>';
+        return;
+    }
+
+    const sorted = [...pastes].sort((a,b) => b.id - a.id);
+    list.innerHTML = sorted.map(f => `
+        <div class="it">
+            <span class="id">#${f.id}</span>
+            <span class="nm" onclick="lf(${f.id})">${esc(f.name || 'untitled')}</span>
+            <span class="sz">${(f.content||'').length} chars</span>
+            <a href="/raw/${f.id}" target="_blank" class="rw">🔗 raw</a>
+            <button class="x" onclick="event.stopPropagation();df(${f.id})">🗑️</button>
+        </div>
+    `).join('');
+}
+
+function esc(t) {
+    const d = document.createElement('div');
+    d.textContent = t;
+    return d.innerHTML;
+}
+
+// ============================================================
+// CRUD
+// ============================================================
+function sv() {
+    const content = document.getElementById('cd').value;
+    if (!content.trim()) { t('Nội dung trống!', 'err'); return; }
+
+    const name = 'paste-' + (pastes.length + 1);
+
+    if (editId) {
+        const idx = pastes.findIndex(f => f.id === editId);
+        if (idx !== -1) {
+            pastes[idx] = { ...pastes[idx], content, updated: Date.now() };
+            t('✅ Updated #' + editId, 'ok');
+        }
+        editId = null;
+    } else {
+        const id = gn();
+        pastes.push({ id, name, content, created: Date.now(), updated: Date.now() });
+        t('✅ Created #' + id, 'ok');
+    }
+
+    sd();
+    const url = window.location.href.split('?')[0] + '?p=' + pastes[pastes.length-1].id;
+    document.getElementById('shareUrl').textContent = url;
+    document.getElementById('linkArea').style.display = 'block';
+    document.getElementById('cd').value = '';
+    r();
+}
+
+function lf(id) {
+    const f = pastes.find(x => x.id === id);
+    if (!f) return;
+    editId = id;
+    document.getElementById('cd').value = f.content;
+    document.getElementById('linkArea').style.display = 'none';
+    t('📂 Loaded #' + id, 'inf');
+    r();
+}
+
+function df(id) {
+    if (!confirm('Delete #' + id + '?')) return;
+    pastes = pastes.filter(x => x.id !== id);
+    sd();
+    if (editId === id) { editId = null; document.getElementById('linkArea').style.display = 'none'; }
+    t('🗑️ Deleted', 'err');
+}
+
+function cl() {
+    if (document.getElementById('cd').value && !confirm('Clear editor?')) return;
+    document.getElementById('cd').value = '';
+    editId = null;
+    document.getElementById('linkArea').style.display = 'none';
+    t('🧹 Cleared', 'inf');
+    r();
+}
+
+// ============================================================
+// COPY
+// ============================================================
+function cp() {
+    const c = document.getElementById('cd').value;
+    if (!c) { t('Nothing to copy!', 'err'); return; }
+    navigator.clipboard?.writeText(c)
+        .then(() => t('📋 Copied!', 'ok'))
+        .catch(() => {
+            const ta = document.createElement('textarea');
+            ta.value = c;
+            document.body.appendChild(ta);
+            ta.select();
+            document.execCommand('copy');
+            ta.remove();
+            t('📋 Copied!', 'ok');
+        });
+}
+
+// ============================================================
+// DOWNLOAD
+// ============================================================
+function dl() {
+    const c = document.getElementById('cd').value;
+    if (!c) { t('Nothing to download!', 'err'); return; }
+    const blob = new Blob([c], { type: 'text/plain' });
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'paste.txt';
+    a.click();
+    URL.revokeObjectURL(a.href);
+    t('⬇️ Downloaded', 'ok');
+}
+
+// ============================================================
+// LOAD FILE
+// ============================================================
+function loadFile(e) {
+    const file = e.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = function(ev) {
+        document.getElementById('cd').value = ev.target.result;
+        t('📂 Loaded: ' + file.name, 'ok');
+    };
+    reader.readAsText(file);
+    e.target.value = '';
+}
+
+// ============================================================
+// SHARE LINK
+// ============================================================
+function cs() {
+    const url = document.getElementById('shareUrl').textContent;
+    if (!url || url === '...') { t('No link!', 'err'); return; }
+    navigator.clipboard?.writeText(url)
+        .then(() => t('🔗 Link copied!', 'ok'))
+        .catch(() => {
+            const ta = document.createElement('textarea');
+            ta.value = url;
+            document.body.appendChild(ta);
+            ta.select();
+            document.execCommand('copy');
+            ta.remove();
+            t('🔗 Link copied!', 'ok');
+        });
+}
+
+// ============================================================
+// TOAST
+// ============================================================
+function t(msg, type = 'inf') {
+    const box = document.getElementById('toasts') || (() => {
+        const b = document.createElement('div');
+        b.className = 'toasts';
+        b.id = 'toasts';
+        document.body.appendChild(b);
+        return b;
+    })();
+    const el = document.createElement('div');
+    el.className = 'toast ' + type;
+    const icons = { ok: '✅', err: '❌', inf: 'ℹ️' };
+    el.textContent = icons[type] + ' ' + msg;
+    box.appendChild(el);
+    setTimeout(() => {
+        el.style.opacity = '0';
+        el.style.transform = 'translateX(30px)';
+        el.style.transition = '0.3s';
+        setTimeout(() => el.remove(), 300);
+    }, 2200);
+}
+
+// ============================================================
+// LOAD FROM URL
+// ============================================================
+function lfu() {
+    const p = new URLSearchParams(window.location.search);
+    const id = p.get('p');
+    if (id) {
+        const f = pastes.find(x => x.id === parseInt(id));
+        if (f) {
+            document.getElementById('cd').value = f.content;
+            t('📂 Loaded #' + f.id, 'ok');
+            window.history.replaceState({}, document.title, window.location.pathname);
+        }
+    }
+}
+
+// ============================================================
+// RAW HANDLER - CHỈ TEXT THUẦN, KHÔNG HTML CSS JS
+// ============================================================
+function handleRaw() {
+    const path = window.location.pathname;
+    const parts = path.split('/').filter(p => p);
+    
+    if (parts.length >= 2 && parts[0] === 'raw') {
+        const id = parseInt(parts[1]);
+        let content = '';
+        try {
+            const d = localStorage.getItem('pbin');
+            if (d) {
+                const data = JSON.parse(d);
+                const f = (data.pastes || []).find(x => x.id === id);
+                if (f) content = f.content || '';
+                else content = '// File #' + id + ' not found';
+            } else {
+                content = '// No data found';
+            }
+        } catch {
+            content = '// Error loading data';
+        }
+        
+        // Xóa toàn bộ HTML, chỉ hiển thị text thuần
+        document.documentElement.innerHTML = `<pre style="margin:0;padding:24px;background:#0a0a0a;color:#ccc;font-family:'Courier New',monospace;font-size:14px;min-height:100vh;white-space:pre-wrap;word-break:break-all;">${content}</pre>`;
+        document.title = 'Raw #' + id;
+    }
+}
+
+// ============================================================
+// KEYBOARD
+// ============================================================
+document.addEventListener('keydown', e => {
+    if ((e.ctrlKey || e.metaKey) && e.key === 's') {
+        e.preventDefault();
+        sv();
+    }
+    if (e.key === 'Escape') {
+        document.getElementById('linkArea').style.display = 'none';
+    }
+});
+
+// ============================================================
+// INIT
+// ============================================================
+ld();
+lfu();
+handleRaw();
 </script>
 </body>
-    </html>
+        </html>
