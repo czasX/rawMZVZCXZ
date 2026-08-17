@@ -1,0 +1,943 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>📝 CodeBin Pro</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        :root {
+            --bg: #0a0a0f;
+            --card: #14141e;
+            --border: #2a2a3a;
+            --text: #e4e4e7;
+            --text-sub: #8a8a9a;
+            --primary: #6c5ce7;
+            --primary-hover: #5a4bd1;
+            --green: #00b894;
+            --orange: #fdcb6e;
+            --red: #e17055;
+            --blue: #74b9ff;
+            --purple: #a29bfe;
+            --shadow: 0 8px 32px rgba(0,0,0,0.4);
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        /* Header */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 24px;
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            margin-bottom: 24px;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        .header .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 22px;
+            font-weight: 700;
+        }
+        .header .logo i { color: var(--primary); }
+        .header .logo span { background: linear-gradient(135deg, var(--primary), var(--purple)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .header .stats {
+            display: flex;
+            gap: 20px;
+            font-size: 13px;
+            color: var(--text-sub);
+        }
+        .header .stats span { display: flex; align-items: center; gap: 6px; }
+        .header .stats .num { color: var(--text); font-weight: 600; }
+
+        /* Main Grid */
+        .main-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+            margin-bottom: 24px;
+        }
+        
+        @media (max-width: 900px) {
+            .main-grid { grid-template-columns: 1fr; }
+        }
+
+        /* Card */
+        .card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            overflow: hidden;
+        }
+        .card-header {
+            padding: 16px 20px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(255,255,255,0.02);
+        }
+        .card-header .title {
+            font-weight: 600;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .card-header .title i { color: var(--primary); }
+        .card-body { padding: 20px; }
+
+        /* Form */
+        .form-group {
+            margin-bottom: 16px;
+        }
+        .form-group label {
+            display: block;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-sub);
+            margin-bottom: 6px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .form-group .input-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+        .form-group .input-wrapper i {
+            position: absolute;
+            left: 14px;
+            color: var(--text-sub);
+            font-size: 14px;
+        }
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 12px 16px 12px 42px;
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            color: var(--text);
+            font-family: 'Inter', sans-serif;
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+        .form-group input:focus, .form-group select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(108, 92, 231, 0.15);
+        }
+        .form-group input::placeholder { color: var(--text-sub); }
+        .form-group .hint {
+            font-size: 11px;
+            color: var(--text-sub);
+            margin-top: 4px;
+        }
+        .form-group .hint i { margin-right: 4px; }
+
+        /* ID Display */
+        .id-display {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 16px;
+            background: var(--bg);
+            border-radius: 10px;
+            border: 1px solid var(--border);
+        }
+        .id-display .id-number {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary);
+            min-width: 40px;
+        }
+        .id-display .id-label {
+            font-size: 12px;
+            color: var(--text-sub);
+        }
+        .id-display .id-status {
+            margin-left: auto;
+            font-size: 12px;
+            padding: 4px 12px;
+            border-radius: 20px;
+            background: rgba(0, 184, 148, 0.15);
+            color: var(--green);
+        }
+        .id-display .id-status.taken {
+            background: rgba(225, 112, 85, 0.15);
+            color: var(--red);
+        }
+
+        /* Name + ID Row */
+        .name-id-row {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 12px;
+        }
+        @media (max-width: 500px) {
+            .name-id-row { grid-template-columns: 1fr; }
+        }
+
+        /* Textarea */
+        .editor-area {
+            position: relative;
+        }
+        .editor-area textarea {
+            width: 100%;
+            min-height: 350px;
+            padding: 16px;
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            color: var(--text);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px;
+            line-height: 1.7;
+            resize: vertical;
+            transition: border-color 0.3s;
+        }
+        .editor-area textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(108, 92, 231, 0.1);
+        }
+        .editor-area textarea::placeholder {
+            color: var(--text-sub);
+            font-family: 'Inter', sans-serif;
+        }
+        .editor-area .line-count {
+            position: absolute;
+            left: 8px;
+            top: 16px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+            color: var(--text-sub);
+            opacity: 0.3;
+            pointer-events: none;
+            line-height: 1.7;
+            text-align: right;
+        }
+
+        /* Toolbar */
+        .toolbar {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-top: 12px;
+        }
+        .toolbar button {
+            padding: 10px 18px;
+            border: none;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-family: 'Inter', sans-serif;
+        }
+        .toolbar button:active { transform: scale(0.96); }
+        .btn-save { background: var(--primary); color: white; }
+        .btn-save:hover { background: var(--primary-hover); box-shadow: 0 4px 20px rgba(108, 92, 231, 0.3); }
+        .btn-copy { background: #2d2d3d; color: var(--text); }
+        .btn-copy:hover { background: #3d3d4d; }
+        .btn-download { background: var(--green); color: white; }
+        .btn-download:hover { background: #00a381; }
+        .btn-delete { background: var(--red); color: white; }
+        .btn-delete:hover { background: #d63031; }
+        .btn-raw { background: var(--blue); color: #0a0a0f; }
+        .btn-raw:hover { background: #6cb4ee; }
+        .btn-share { background: var(--purple); color: #0a0a0f; }
+        .btn-share:hover { background: #8c85e0; }
+
+        /* File List */
+        .file-list {
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        .file-list::-webkit-scrollbar { width: 4px; }
+        .file-list::-webkit-scrollbar-track { background: var(--bg); }
+        .file-list::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+
+        .file-item {
+            display: flex;
+            align-items: center;
+            padding: 12px 16px;
+            border-bottom: 1px solid var(--border);
+            gap: 12px;
+            transition: 0.2s;
+            cursor: pointer;
+        }
+        .file-item:hover { background: rgba(255,255,255,0.03); }
+        .file-item:last-child { border-bottom: none; }
+        .file-item .icon {
+            font-size: 20px;
+            width: 36px;
+            text-align: center;
+        }
+        .file-item .info {
+            flex: 1;
+            min-width: 0;
+        }
+        .file-item .info .name {
+            font-weight: 500;
+            font-size: 14px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .file-item .info .meta {
+            font-size: 11px;
+            color: var(--text-sub);
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+        .file-item .info .meta .id-badge {
+            padding: 1px 8px;
+            background: rgba(108, 92, 231, 0.15);
+            border-radius: 4px;
+            color: var(--primary);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+        }
+        .file-item .actions {
+            display: flex;
+            gap: 4px;
+        }
+        .file-item .actions button {
+            padding: 4px 10px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 12px;
+            transition: 0.2s;
+            background: transparent;
+            color: var(--text-sub);
+        }
+        .file-item .actions button:hover {
+            background: rgba(255,255,255,0.05);
+            color: var(--text);
+        }
+        .file-item .actions .del:hover { color: var(--red); }
+        .file-item .actions .edit:hover { color: var(--primary); }
+
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: var(--text-sub);
+        }
+        .empty-state i { font-size: 40px; opacity: 0.2; margin-bottom: 12px; display: block; }
+        .empty-state p { font-size: 14px; }
+
+        /* Modal */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.7);
+            backdrop-filter: blur(8px);
+            z-index: 999;
+            justify-content: center;
+            align-items: center;
+        }
+        .modal-overlay.active { display: flex; }
+        .modal-box {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 32px;
+            max-width: 600px;
+            width: 95%;
+            max-height: 90vh;
+            overflow-y: auto;
+            animation: modalIn 0.3s ease;
+        }
+        @keyframes modalIn {
+            from { transform: scale(0.9); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+        .modal-box .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .modal-box .modal-header h2 {
+            font-size: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .modal-box .modal-header .close {
+            font-size: 28px;
+            cursor: pointer;
+            color: var(--text-sub);
+            transition: 0.2s;
+        }
+        .modal-box .modal-header .close:hover { color: var(--text); }
+        .modal-box .modal-body {
+            font-size: 14px;
+            line-height: 1.8;
+            color: var(--text-sub);
+        }
+        .modal-box .modal-body .url-box {
+            background: var(--bg);
+            padding: 12px 16px;
+            border-radius: 10px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px;
+            color: var(--primary);
+            word-break: break-all;
+            border: 1px solid var(--border);
+            margin: 12px 0;
+        }
+        .modal-box .modal-footer {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+            justify-content: flex-end;
+        }
+        .modal-box .modal-footer button {
+            padding: 10px 24px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: 0.2s;
+        }
+
+        /* Toast */
+        .toast-container {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        .toast {
+            padding: 14px 24px;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 500;
+            background: var(--card);
+            border: 1px solid var(--border);
+            color: var(--text);
+            box-shadow: var(--shadow);
+            animation: slideUp 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            min-width: 200px;
+            backdrop-filter: blur(8px);
+        }
+        .toast.success { border-color: var(--green); }
+        .toast.success i { color: var(--green); }
+        .toast.error { border-color: var(--red); }
+        .toast.error i { color: var(--red); }
+        .toast.info { border-color: var(--primary); }
+        .toast.info i { color: var(--primary); }
+        @keyframes slideUp {
+            from { transform: translateY(20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        /* Responsive */
+        @media (max-width: 600px) {
+            body { padding: 12px; }
+            .header { padding: 12px 16px; }
+            .header .logo { font-size: 18px; }
+            .header .stats { font-size: 11px; gap: 12px; }
+            .card-body { padding: 16px; }
+            .toolbar button { padding: 8px 14px; font-size: 12px; }
+            .modal-box { padding: 20px; }
+            .id-display .id-number { font-size: 18px; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <!-- Header -->
+    <header class="header">
+        <div class="logo">
+            <i class="fas fa-code"></i>
+            <span>CodeBin</span>
+            <span style="font-size:12px; color:var(--text-sub); font-weight:400; -webkit-text-fill-color:var(--text-sub);">Pro</span>
+        </div>
+        <div class="stats">
+            <span><i class="fas fa-file-code"></i> Files: <span class="num" id="totalFiles">0</span></span>
+            <span><i class="fas fa-hashtag"></i> Next ID: <span class="num" id="nextId">1</span></span>
+        </div>
+    </header>
+
+    <!-- Main Grid -->
+    <div class="main-grid">
+        <!-- Left: Editor -->
+        <div class="card">
+            <div class="card-header">
+                <div class="title"><i class="fas fa-pen-fancy"></i> Code Editor</div>
+                <span style="font-size:12px; color:var(--text-sub);" id="charCount">0 chars</span>
+            </div>
+            <div class="card-body">
+                <!-- Name + ID -->
+                <div class="name-id-row">
+                    <div class="form-group">
+                        <label><i class="fas fa-tag"></i> File Name</label>
+                        <div class="input-wrapper">
+                            <i class="fas fa-file-signature"></i>
+                            <input type="text" id="fileName" placeholder="my-script.lua" value="script.lua">
+                        </div>
+                        <div class="hint"><i class="fas fa-info-circle"></i> Tên file + đuôi để highlight</div>
+                    </div>
+                    <div class="form-group">
+                        <label><i class="fas fa-hashtag"></i> ID</label>
+                        <div class="id-display">
+                            <span class="id-number" id="idDisplay">1</span>
+                            <span class="id-label">Auto</span>
+                            <span class="id-status" id="idStatus">✅ Available</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Editor -->
+                <div class="form-group" style="margin-bottom:0;">
+                    <label><i class="fas fa-terminal"></i> Content</label>
+                    <div class="editor-area">
+                        <textarea id="codeContent" placeholder="Paste your code here...&#10;Supports: Lua, JS, Python, HTML, CSS, and more!" spellcheck="false"></textarea>
+                    </div>
+                </div>
+
+                <!-- Toolbar -->
+                <div class="toolbar">
+                    <button class="btn-save" onclick="saveCode()"><i class="fas fa-save"></i> Save</button>
+                    <button class="btn-copy" onclick="copyCode()"><i class="fas fa-copy"></i> Copy</button>
+                    <button class="btn-download" onclick="downloadCode()"><i class="fas fa-download"></i> Download</button>
+                    <button class="btn-raw" onclick="viewRaw()"><i class="fas fa-eye"></i> Raw</button>
+                    <button class="btn-share" onclick="shareCode()"><i class="fas fa-share-alt"></i> Share</button>
+                    <button class="btn-delete" onclick="clearEditor()"><i class="fas fa-trash"></i></button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right: File List -->
+        <div class="card">
+            <div class="card-header">
+                <div class="title"><i class="fas fa-list"></i> Saved Files</div>
+                <button class="btn-delete" onclick="deleteAll()" style="padding:4px 12px; border:none; border-radius:6px; color:var(--red); background:transparent; cursor:pointer; font-size:12px;">
+                    <i class="fas fa-trash-alt"></i> Clear All
+                </button>
+            </div>
+            <div class="card-body" style="padding:0;">
+                <div class="file-list" id="fileList">
+                    <div class="empty-state">
+                        <i class="fas fa-inbox"></i>
+                        <p>No files saved yet</p>
+                        <span style="font-size:12px;">Write code and click <strong>Save</strong></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Share -->
+<div class="modal-overlay" id="shareModal">
+    <div class="modal-box">
+        <div class="modal-header">
+            <h2><i class="fas fa-link" style="color:var(--primary);"></i> Share Link</h2>
+            <span class="close" onclick="closeModal('shareModal')">&times;</span>
+        </div>
+        <div class="modal-body">
+            <p>Share this link to view your code:</p>
+            <div class="url-box" id="shareUrl">Loading...</div>
+            <button class="btn-copy" onclick="copyShareUrl()" style="padding:8px 16px; border:none; border-radius:8px; background:var(--primary); color:white; cursor:pointer; font-weight:600;">
+                <i class="fas fa-copy"></i> Copy Link
+            </button>
+            <div style="margin-top:12px; font-size:12px; color:var(--text-sub);">
+                <i class="fas fa-info-circle"></i> Mở link sẽ hiển thị code với syntax highlight tự động
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button onclick="closeModal('shareModal')" style="background:var(--border); color:var(--text);">Close</button>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Raw -->
+<div class="modal-overlay" id="rawModal">
+    <div class="modal-box">
+        <div class="modal-header">
+            <h2><i class="fas fa-eye" style="color:var(--blue);"></i> Raw Content</h2>
+            <span class="close" onclick="closeModal('rawModal')">&times;</span>
+        </div>
+        <div class="modal-body">
+            <div style="background:var(--bg); padding:16px; border-radius:10px; font-family:'JetBrains Mono',monospace; font-size:13px; max-height:400px; overflow:auto; white-space:pre-wrap; word-break:break-all; border:1px solid var(--border);" id="rawContent">
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button onclick="closeModal('rawModal')" style="background:var(--border); color:var(--text);">Close</button>
+        </div>
+    </div>
+</div>
+
+<!-- Toast Container -->
+<div class="toast-container" id="toastContainer"></div>
+
+<script>
+// ===================== DATA =====================
+let files = [];
+let editingId = null;
+
+// ===================== LOCAL STORAGE =====================
+function loadData() {
+    try {
+        const data = localStorage.getItem('codebin_files');
+        if (data) files = JSON.parse(data);
+    } catch(e) { files = []; }
+    updateUI();
+}
+
+function saveData() {
+    localStorage.setItem('codebin_files', JSON.stringify(files));
+    updateUI();
+}
+
+// ===================== ID MANAGEMENT =====================
+function getNextId() {
+    if (files.length === 0) return 1;
+    const ids = files.map(f => f.id).sort((a,b) => a-b);
+    let next = 1;
+    for (const id of ids) {
+        if (id === next) next++;
+        else break;
+    }
+    return next;
+}
+
+function updateIdDisplay() {
+    const nextId = getNextId();
+    document.getElementById('idDisplay').textContent = nextId;
+    document.getElementById('nextId').textContent = nextId;
+    const status = document.getElementById('idStatus');
+    if (editingId) {
+        status.textContent = `✏️ Editing #${editingId}`;
+        status.className = 'id-status';
+        status.style.color = 'var(--orange)';
+    } else {
+        status.textContent = '✅ Available';
+        status.className = 'id-status';
+        status.style.color = 'var(--green)';
+    }
+}
+
+// ===================== SYNTAX HIGHLIGHT =====================
+function getFileIcon(filename) {
+    if (!filename) return '📄';
+    const ext = filename.split('.').pop().toLowerCase();
+    const icons = {
+        lua: '📜', js: '🟨', ts: '🔵', py: '🐍', html: '🌐',
+        css: '🎨', json: '📋', xml: '📰', md: '📝', txt: '📄',
+        sh: '💻', bash: '💻', php: '🐘', java: '☕', cpp: '⚙️',
+        c: '⚙️', go: '🐹', rs: '🦀', rb: '💎', swift: '🐦'
+    };
+    return icons[ext] || '📄';
+}
+
+function escapeHtml(text) {
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
+}
+
+// ===================== SAVE =====================
+function saveCode() {
+    const name = document.getElementById('fileName').value.trim() || 'untitled.txt';
+    const content = document.getElementById('codeContent').value;
+    
+    if (!content.trim()) {
+        toast('Content cannot be empty!', 'error');
+        return;
+    }
+    
+    let id;
+    if (editingId) {
+        id = editingId;
+        const index = files.findIndex(f => f.id === id);
+        if (index !== -1) {
+            files[index] = { ...files[index], name, content, updated: Date.now() };
+            toast(`✅ Updated #${id}`, 'success');
+        }
+        editingId = null;
+        document.getElementById('idStatus').textContent = '✅ Available';
+        document.getElementById('idStatus').style.color = 'var(--green)';
+    } else {
+        id = getNextId();
+        files.push({ id, name, content, created: Date.now(), updated: Date.now() });
+        toast(`✅ Saved #${id}: ${name}`, 'success');
+    }
+    
+    saveData();
+    document.getElementById('codeContent').value = '';
+    document.getElementById('fileName').value = 'script.lua';
+    updateIdDisplay();
+    updateCharCount();
+}
+
+// ===================== LOAD =====================
+function loadFile(id) {
+    const file = files.find(f => f.id === id);
+    if (!file) return;
+    
+    editingId = id;
+    document.getElementById('fileName').value = file.name;
+    document.getElementById('codeContent').value = file.content;
+    document.getElementById('idDisplay').textContent = id;
+    document.getElementById('idStatus').textContent = `✏️ Editing #${id}`;
+    document.getElementById('idStatus').style.color = 'var(--orange)';
+    document.getElementById('codeContent').focus();
+    updateCharCount();
+    toast(`📂 Loaded: ${file.name}`, 'info');
+}
+
+// ===================== DELETE =====================
+function deleteFile(id) {
+    if (!confirm(`Delete file #${id}?`)) return;
+    const file = files.find(f => f.id === id);
+    files = files.filter(f => f.id !== id);
+    saveData();
+    if (editingId === id) {
+        editingId = null;
+        document.getElementById('idStatus').textContent = '✅ Available';
+        document.getElementById('idStatus').style.color = 'var(--green)';
+        updateIdDisplay();
+    }
+    toast(`🗑️ Deleted: ${file?.name || 'file'}`, 'error');
+}
+
+function deleteAll() {
+    if (files.length === 0) return;
+    if (!confirm('Delete ALL files?')) return;
+    files = [];
+    saveData();
+    editingId = null;
+    updateIdDisplay();
+    toast('🗑️ All files deleted', 'error');
+}
+
+// ===================== COPY =====================
+function copyCode() {
+    const content = document.getElementById('codeContent').value;
+    if (!content) { toast('Nothing to copy!', 'error'); return; }
+    navigator.clipboard.writeText(content).then(() => {
+        toast('📋 Copied to clipboard!', 'success');
+    }).catch(() => {
+        const ta = document.createElement('textarea');
+        ta.value = content;
+        document.body.appendChild(ta);
+        ta.select();
+        document.execCommand('copy');
+        document.body.removeChild(ta);
+        toast('📋 Copied!', 'success');
+    });
+}
+
+function copyShareUrl() {
+    const url = document.getElementById('shareUrl').textContent;
+    navigator.clipboard.writeText(url).then(() => {
+        toast('🔗 Link copied!', 'success');
+    }).catch(() => {
+        const ta = document.createElement('textarea');
+        ta.value = url;
+        document.body.appendChild(ta);
+        ta.select();
+        document.execCommand('copy');
+        document.body.removeChild(ta);
+        toast('🔗 Link copied!', 'success');
+    });
+}
+
+// ===================== DOWNLOAD =====================
+function downloadCode() {
+    const content = document.getElementById('codeContent').value;
+    const name = document.getElementById('fileName').value || 'script.txt';
+    if (!content) { toast('Nothing to download!', 'error'); return; }
+    const blob = new Blob([content], { type: 'text/plain' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = name;
+    a.click();
+    URL.revokeObjectURL(url);
+    toast('📥 Downloaded!', 'success');
+}
+
+// ===================== RAW VIEW =====================
+function viewRaw() {
+    const content = document.getElementById('codeContent').value;
+    if (!content) { toast('No content to view!', 'error'); return; }
+    document.getElementById('rawContent').textContent = content;
+    document.getElementById('rawModal').classList.add('active');
+}
+
+// ===================== SHARE =====================
+function shareCode() {
+    const content = document.getElementById('codeContent').value;
+    const name = document.getElementById('fileName').value || 'script.txt';
+    if (!content) { toast('Nothing to share!', 'error'); return; }
+    
+    const data = btoa(encodeURIComponent(JSON.stringify({ name, content })));
+    const url = window.location.href.split('?')[0] + '?code=' + data;
+    document.getElementById('shareUrl').textContent = url;
+    document.getElementById('shareModal').classList.add('active');
+}
+
+// ===================== CLEAR EDITOR =====================
+function clearEditor() {
+    if (document.getElementById('codeContent').value && !confirm('Clear editor content?')) return;
+    document.getElementById('codeContent').value = '';
+    document.getElementById('fileName').value = 'script.lua';
+    editingId = null;
+    updateIdDisplay();
+    updateCharCount();
+    toast('🧹 Editor cleared', 'info');
+}
+
+// ===================== MODAL =====================
+function closeModal(id) {
+    document.getElementById(id).classList.remove('active');
+}
+
+// ===================== TOAST =====================
+function toast(message, type = 'info') {
+    const container = document.getElementById('toastContainer');
+    const toast = document.createElement('div');
+    const icons = {
+        success: '✅',
+        error: '❌',
+        info: 'ℹ️'
+    };
+    toast.className = `toast ${type}`;
+    toast.innerHTML = `<i class="fas ${type === 'success' ? 'fa-check-circle' : type === 'error' ? 'fa-exclamation-circle' : 'fa-info-circle'}"></i> ${message}`;
+    container.appendChild(toast);
+    setTimeout(() => {
+        toast.style.opacity = '0';
+        toast.style.transform = 'translateX(100px)';
+        toast.style.transition = 'all 0.3s';
+        setTimeout(() => toast.remove(), 300);
+    }, 2500);
+}
+
+// ===================== CHAR COUNT =====================
+function updateCharCount() {
+    const content = document.getElementById('codeContent').value;
+    document.getElementById('charCount').textContent = content.length + ' chars';
+}
+
+// ===================== UI UPDATE =====================
+function updateUI() {
+    const list = document.getElementById('fileList');
+    document.getElementById('totalFiles').textContent = files.length;
+    updateIdDisplay();
+    updateCharCount();
+    
+    if (files.length === 0) {
+        list.innerHTML = `
+            <div class="empty-state">
+                <i class="fas fa-inbox"></i>
+                <p>No files saved yet</p>
+                <span style="font-size:12px;">Write code and click <strong>Save</strong></span>
+            </div>
+        `;
+        return;
+    }
+    
+    const sorted = [...files].sort((a,b) => b.id - a.id);
+    
+    list.innerHTML = sorted.map(file => `
+        <div class="file-item">
+            <div class="icon">${getFileIcon(file.name)}</div>
+            <div class="info" onclick="loadFile(${file.id})">
+                <div class="name">${escapeHtml(file.name)}</div>
+                <div class="meta">
+                    <span class="id-badge">#${file.id}</span>
+                    <span>${new Date(file.updated || file.created).toLocaleString()}</span>
+                    <span>${Math.round((file.content || '').length / 1024 * 100) / 100} KB</span>
+                </div>
+            </div>
+            <div class="actions">
+                <button onclick="loadFile(${file.id})" title="Edit"><i class="fas fa-pen"></i></button>
+                <button class="del" onclick="deleteFile(${file.id})" title="Delete"><i class="fas fa-trash"></i></button>
+            </div>
+        </div>
+    `).join('');
+}
+
+// ===================== KEYBOARD SHORTCUTS =====================
+document.addEventListener('keydown', (e) => {
+    // Ctrl+S = Save
+    if (e.ctrlKey && e.key === 's') {
+        e.preventDefault();
+        saveCode();
+    }
+    // Ctrl+Enter = Save
+    if (e.ctrlKey && e.key === 'Enter') {
+        e.preventDefault();
+        saveCode();
+    }
+    // Escape = close modals
+    if (e.key === 'Escape') {
+        document.querySelectorAll('.modal-overlay.active').forEach(m => m.classList.remove('active'));
+    }
+});
+
+// ===================== AUTO-LOAD FROM URL =====================
+function loadFromUrl() {
+    const params = new URLSearchParams(window.location.search);
+    const codeData = params.get('code');
+    if (codeData) {
+        try {
+            const decoded = JSON.parse(decodeURIComponent(atob(codeData)));
+            document.getElementById('fileName').value = decoded.name || 'shared.lua';
+            document.getElementById('codeContent').value = decoded.content || '';
+            updateCharCount();
+            toast('📂 Loaded shared code!', 'success');
+            // Clean URL
+            window.history.replaceState({}, document.title, window.location.pathname);
+        } catch(e) {
+            toast('Invalid shared link!', 'error');
+        }
+    }
+}
+
+// ===================== INIT =====================
+document.getElementById('codeContent').addEventListener('input', updateCharCount);
+loadData();
+loadFromUrl();
+</script>
+</body>
+  </html>
