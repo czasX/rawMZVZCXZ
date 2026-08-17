@@ -3,177 +3,1203 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RawBin</title>
+    <title>⚡ CodeBin Pro</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <style>
-        *{margin:0;padding:0;box-sizing:border-box}
-        body{background:#09090b;color:#e4e4e7;font-family:system-ui,'Segoe UI',sans-serif;padding:20px;display:flex;justify-content:center}
-        .w{max-width:1100px;width:100%}
-        .h{display:flex;justify-content:space-between;align-items:center;background:#18181b;padding:12px 20px;border-radius:12px;border:1px solid #27272a;margin-bottom:16px;flex-wrap:wrap;gap:10px}
-        .h .l{font-weight:700;font-size:20px}
-        .h .l span{color:#8b5cf6}
-        .h .st{display:flex;gap:16px;font-size:13px;color:#71717a}
-        .h .st b{color:#f4f4f5}
-        .h .u{display:flex;align-items:center;gap:8px}
-        .h .u .b{padding:2px 12px;border-radius:20px;background:#27272a;font-size:12px;color:#a1a1aa}
-        .btn{padding:6px 16px;border:none;border-radius:8px;font-weight:600;font-size:13px;cursor:pointer;font-family:inherit;transition:.2s}
-        .btn-p{background:#8b5cf6;color:#fff}
-        .btn-p:hover{background:#7c3aed}
-        .btn-d{background:#ef4444;color:#fff}
-        .btn-d:hover{background:#dc2626}
-        .g{display:grid;grid-template-columns:1fr 1fr;gap:16px}
-        @media(max-width:768px){.g{grid-template-columns:1fr}}
-        .c{background:#18181b;border:1px solid #27272a;border-radius:12px;overflow:hidden}
-        .ch{padding:10px 16px;border-bottom:1px solid #27272a;display:flex;justify-content:space-between;align-items:center;font-weight:600;font-size:14px;background:#18181b}
-        .ch i{color:#8b5cf6;margin-right:6px}
-        .cb{padding:14px}
-        .r{display:grid;grid-template-columns:2fr 1fr;gap:10px;margin-bottom:10px}
-        @media(max-width:500px){.r{grid-template-columns:1fr}}
-        .f label{display:block;font-size:11px;font-weight:600;color:#71717a;text-transform:uppercase;letter-spacing:.3px;margin-bottom:4px}
-        .f input{width:100%;padding:10px 14px;background:#09090b;border:1px solid #27272a;border-radius:8px;color:#f4f4f5;font-size:14px;font-family:inherit;transition:.2s;outline:none}
-        .f input:focus{border-color:#8b5cf6;box-shadow:0 0 0 3px rgba(139,92,246,.15)}
-        .idb{display:flex;align-items:center;gap:12px;padding:8px 14px;background:#09090b;border:1px solid #27272a;border-radius:8px;height:42px}
-        .idb .n{font-size:22px;font-weight:700;color:#8b5cf6}
-        .idb .s{padding:2px 12px;border-radius:12px;font-size:11px;margin-left:auto;background:rgba(34,197,94,.15);color:#22c55e}
-        .idb .s.l{background:rgba(239,68,68,.15);color:#ef4444}
-        .idb .s.e{background:rgba(234,179,8,.15);color:#eab308}
-        textarea{width:100%;min-height:320px;padding:14px;background:#09090b;border:1px solid #27272a;border-radius:8px;color:#f4f4f5;font-family:'Courier New',monospace;font-size:13px;line-height:1.7;resize:vertical;transition:.2s;outline:none}
-        textarea:focus{border-color:#8b5cf6;box-shadow:0 0 0 3px rgba(139,92,246,.1)}
-        textarea:disabled{opacity:.4;cursor:not-allowed}
-        .tb{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}
-        .tb button{padding:8px 16px;border:none;border-radius:8px;font-weight:600;font-size:12px;cursor:pointer;font-family:inherit;transition:.2s;display:flex;align-items:center;gap:6px}
-        .tb button:disabled{opacity:.3;cursor:not-allowed}
-        .tb .sv{background:#8b5cf6;color:#fff}
-        .tb .sv:hover:not(:disabled){background:#7c3aed}
-        .tb .cp{background:#27272a;color:#e4e4e7}
-        .tb .cp:hover:not(:disabled){background:#3f3f46}
-        .tb .dl{background:#22c55e;color:#fff}
-        .tb .dl:hover:not(:disabled){background:#16a34a}
-        .tb .sh{background:#eab308;color:#09090b}
-        .tb .sh:hover:not(:disabled){background:#ca8a04}
-        .tb .rm{background:#ef4444;color:#fff}
-        .tb .rm:hover:not(:disabled){background:#dc2626}
-        .fl{max-height:380px;overflow-y:auto}
-        .fl::-webkit-scrollbar{width:4px}
-        .fl::-webkit-scrollbar-thumb{background:#27272a;border-radius:4px}
-        .it{display:flex;align-items:center;padding:10px 14px;border-bottom:1px solid #18181b;gap:12px;cursor:pointer;transition:.15s}
-        .it:hover{background:rgba(255,255,255,.02)}
-        .it .ic{font-size:20px;width:32px;text-align:center}
-        .it .in{flex:1;min-width:0}
-        .it .in .nm{font-size:14px;font-weight:500}
-        .it .in .mt{font-size:11px;color:#71717a;display:flex;gap:12px;flex-wrap:wrap}
-        .it .in .mt .id{color:#8b5cf6;font-weight:600}
-        .it .in .mt .rw{color:#22c55e;text-decoration:none}
-        .it .in .mt .rw:hover{text-decoration:underline}
-        .it .ac{display:flex;gap:4px}
-        .it .ac button{padding:2px 8px;border:none;border-radius:4px;background:0 0;color:#71717a;cursor:pointer;font-size:13px;transition:.2s}
-        .it .ac button:hover{color:#f4f4f5}
-        .it .ac .x:hover{color:#ef4444}
-        .e{text-align:center;padding:40px 16px;color:#71717a;font-size:14px}
-        .e i{font-size:36px;opacity:.2;display:block;margin-bottom:10px}
-        .toasts{position:fixed;bottom:24px;right:24px;z-index:999;display:flex;flex-direction:column;gap:6px}
-        .toast{padding:12px 20px;border-radius:10px;font-size:13px;font-weight:500;background:#18181b;border:1px solid #27272a;animation:p .25s ease;display:flex;align-items:center;gap:8px}
-        .toast.ok{border-color:#22c55e;color:#22c55e}
-        .toast.err{border-color:#ef4444;color:#ef4444}
-        .toast.inf{border-color:#8b5cf6;color:#8b5cf6}
-        @keyframes p{from{transform:translateX(30px);opacity:0}to{transform:translateX(0);opacity:1}}
-        .m{display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);backdrop-filter:blur(4px);z-index:99;justify-content:center;align-items:center}
-        .m.a{display:flex}
-        .mb{background:#18181b;border:1px solid #27272a;border-radius:16px;padding:28px;max-width:420px;width:95%}
-        .mb h3{font-size:20px;margin-bottom:16px;display:flex;align-items:center;gap:8px}
-        .mb h3 i{color:#8b5cf6}
-        .mb input{width:100%;padding:12px 14px;background:#09090b;border:1px solid #27272a;border-radius:8px;color:#f4f4f5;font-size:14px;font-family:inherit;margin-bottom:10px;outline:none}
-        .mb input:focus{border-color:#8b5cf6}
-        .mb .er{color:#ef4444;font-size:13px;margin-bottom:10px;display:none}
-        .mb .er.s{display:block}
-        .mb .ma{display:flex;gap:10px}
-        .mb .ma button{flex:1;padding:10px;border:none;border-radius:8px;font-weight:600;cursor:pointer;font-size:14px;font-family:inherit}
-        .mb .ma .cl{background:#27272a;color:#e4e4e7}
-        .mb .ma .cl:hover{background:#3f3f46}
-        .mb .ma .lg{background:#8b5cf6;color:#fff}
-        .mb .ma .lg:hover{background:#7c3aed}
-        .mb .url{background:#09090b;padding:10px 14px;border-radius:8px;font-size:12px;color:#8b5cf6;word-break:break-all;border:1px solid #27272a;margin:8px 0 12px;font-family:monospace}
-        .mb .sa{display:flex;gap:8px;justify-content:flex-end}
-        .mb .sa button{padding:8px 18px;border:none;border-radius:8px;font-weight:600;cursor:pointer;font-size:13px;font-family:inherit}
-        .mb .sa .copy{background:#8b5cf6;color:#fff}
-        .mb .sa .copy:hover{background:#7c3aed}
-        .mb .sa .cls{background:#27272a;color:#e4e4e7}
-        .mb .sa .cls:hover{background:#3f3f46}
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            background: #0c0c0f;
+            color: #e0e0e0;
+            font-family: 'Inter', -apple-system, system-ui, sans-serif;
+            padding: 24px;
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+        }
+
+        /* ===== HEADER ===== */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 24px;
+            background: #16161a;
+            border-radius: 16px;
+            border: 1px solid #2a2a2e;
+            margin-bottom: 24px;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        .header .logo {
+            font-size: 24px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .header .logo i {
+            color: #7c5cfc;
+        }
+        .header .logo span {
+            background: linear-gradient(135deg, #7c5cfc, #a78bfa);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .header .stats {
+            display: flex;
+            gap: 20px;
+            font-size: 14px;
+            color: #888;
+        }
+        .header .stats b {
+            color: #fff;
+        }
+        .header .user {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .header .user .badge {
+            padding: 4px 14px;
+            border-radius: 20px;
+            background: #2a2a2e;
+            font-size: 13px;
+            color: #aaa;
+        }
+        .btn {
+            padding: 8px 20px;
+            border: none;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 13px;
+            cursor: pointer;
+            transition: 0.2s;
+            font-family: inherit;
+        }
+        .btn-primary {
+            background: #7c5cfc;
+            color: #fff;
+        }
+        .btn-primary:hover {
+            background: #6a4ae8;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 20px rgba(124, 92, 252, 0.3);
+        }
+        .btn-danger {
+            background: #ef4444;
+            color: #fff;
+        }
+        .btn-danger:hover {
+            background: #dc2626;
+        }
+        .btn-outline {
+            background: transparent;
+            border: 1px solid #3a3a3e;
+            color: #ccc;
+        }
+        .btn-outline:hover {
+            background: #2a2a2e;
+        }
+
+        /* ===== GRID ===== */
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        @media (max-width: 900px) {
+            .grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* ===== CARD ===== */
+        .card {
+            background: #16161a;
+            border-radius: 16px;
+            border: 1px solid #2a2a2e;
+            overflow: hidden;
+        }
+        .card-header {
+            padding: 14px 20px;
+            border-bottom: 1px solid #2a2a2e;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 600;
+            font-size: 14px;
+            background: #121215;
+        }
+        .card-header i {
+            color: #7c5cfc;
+            margin-right: 8px;
+        }
+        .card-body {
+            padding: 18px;
+        }
+
+        /* ===== FORM ===== */
+        .row {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+        @media (max-width: 500px) {
+            .row {
+                grid-template-columns: 1fr;
+            }
+        }
+        .field label {
+            display: block;
+            font-size: 11px;
+            font-weight: 600;
+            color: #888;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 5px;
+        }
+        .field input {
+            width: 100%;
+            padding: 10px 14px;
+            background: #0c0c0f;
+            border: 1px solid #2a2a2e;
+            border-radius: 10px;
+            color: #e0e0e0;
+            font-size: 14px;
+            font-family: inherit;
+            transition: 0.2s;
+            outline: none;
+        }
+        .field input:focus {
+            border-color: #7c5cfc;
+            box-shadow: 0 0 0 3px rgba(124, 92, 252, 0.12);
+        }
+
+        .idbox {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 8px 14px;
+            background: #0c0c0f;
+            border: 1px solid #2a2a2e;
+            border-radius: 10px;
+            height: 44px;
+        }
+        .idbox .num {
+            font-size: 22px;
+            font-weight: 700;
+            color: #7c5cfc;
+            font-family: 'JetBrains Mono', monospace;
+        }
+        .idbox .status {
+            font-size: 11px;
+            padding: 2px 12px;
+            border-radius: 12px;
+            margin-left: auto;
+            background: rgba(34, 197, 94, 0.15);
+            color: #22c55e;
+        }
+        .idbox .status.lock {
+            background: rgba(239, 68, 68, 0.15);
+            color: #ef4444;
+        }
+        .idbox .status.edit {
+            background: rgba(234, 179, 8, 0.15);
+            color: #eab308;
+        }
+
+        /* ===== TEXTAREA ===== */
+        textarea {
+            width: 100%;
+            min-height: 340px;
+            padding: 14px;
+            background: #0c0c0f;
+            border: 1px solid #2a2a2e;
+            border-radius: 10px;
+            color: #e0e0e0;
+            font-family: 'JetBrains Mono', 'Courier New', monospace;
+            font-size: 13px;
+            line-height: 1.8;
+            resize: vertical;
+            transition: 0.2s;
+            outline: none;
+        }
+        textarea:focus {
+            border-color: #7c5cfc;
+            box-shadow: 0 0 0 3px rgba(124, 92, 252, 0.08);
+        }
+        textarea:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+
+        /* ===== TOOLBAR ===== */
+        .toolbar {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-top: 12px;
+        }
+        .toolbar button {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 12px;
+            cursor: pointer;
+            transition: 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-family: inherit;
+        }
+        .toolbar button:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+        }
+        .toolbar .save {
+            background: #7c5cfc;
+            color: #fff;
+        }
+        .toolbar .save:hover:not(:disabled) {
+            background: #6a4ae8;
+        }
+        .toolbar .copy {
+            background: #2a2a2e;
+            color: #ccc;
+        }
+        .toolbar .copy:hover:not(:disabled) {
+            background: #3a3a3e;
+        }
+        .toolbar .download {
+            background: #22c55e;
+            color: #fff;
+        }
+        .toolbar .download:hover:not(:disabled) {
+            background: #16a34a;
+        }
+        .toolbar .share {
+            background: #eab308;
+            color: #0c0c0f;
+        }
+        .toolbar .share:hover:not(:disabled) {
+            background: #ca8a04;
+        }
+        .toolbar .clear {
+            background: #ef4444;
+            color: #fff;
+        }
+        .toolbar .clear:hover:not(:disabled) {
+            background: #dc2626;
+        }
+
+        /* ===== FILE LIST ===== */
+        .filelist {
+            max-height: 380px;
+            overflow-y: auto;
+        }
+        .filelist::-webkit-scrollbar {
+            width: 4px;
+        }
+        .filelist::-webkit-scrollbar-thumb {
+            background: #2a2a2e;
+            border-radius: 4px;
+        }
+
+        .item {
+            display: flex;
+            align-items: center;
+            padding: 10px 16px;
+            border-bottom: 1px solid #1a1a1e;
+            gap: 12px;
+            cursor: pointer;
+            transition: 0.15s;
+        }
+        .item:hover {
+            background: rgba(255, 255, 255, 0.02);
+        }
+        .item .icon {
+            font-size: 20px;
+            width: 34px;
+            text-align: center;
+        }
+        .item .info {
+            flex: 1;
+            min-width: 0;
+        }
+        .item .info .name {
+            font-size: 14px;
+            font-weight: 500;
+        }
+        .item .info .meta {
+            font-size: 11px;
+            color: #666;
+            display: flex;
+            gap: 14px;
+            flex-wrap: wrap;
+        }
+        .item .info .meta .id {
+            color: #7c5cfc;
+            font-weight: 600;
+        }
+        .item .info .meta .raw {
+            color: #22c55e;
+            text-decoration: none;
+        }
+        .item .info .meta .raw:hover {
+            text-decoration: underline;
+        }
+        .item .actions {
+            display: flex;
+            gap: 4px;
+        }
+        .item .actions button {
+            padding: 2px 8px;
+            border: none;
+            border-radius: 4px;
+            background: transparent;
+            color: #666;
+            cursor: pointer;
+            font-size: 13px;
+            transition: 0.2s;
+        }
+        .item .actions button:hover {
+            color: #e0e0e0;
+        }
+        .item .actions .del:hover {
+            color: #ef4444;
+        }
+
+        .empty {
+            text-align: center;
+            padding: 40px 16px;
+            color: #555;
+            font-size: 14px;
+        }
+        .empty i {
+            font-size: 36px;
+            opacity: 0.2;
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        /* ===== TOAST ===== */
+        .toasts {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        .toast {
+            padding: 12px 20px;
+            border-radius: 12px;
+            font-size: 13px;
+            font-weight: 500;
+            background: #16161a;
+            border: 1px solid #2a2a2e;
+            animation: slideIn 0.25s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            backdrop-filter: blur(8px);
+        }
+        .toast.ok {
+            border-color: #22c55e;
+            color: #22c55e;
+        }
+        .toast.err {
+            border-color: #ef4444;
+            color: #ef4444;
+        }
+        .toast.info {
+            border-color: #7c5cfc;
+            color: #7c5cfc;
+        }
+        @keyframes slideIn {
+            from {
+                transform: translateX(30px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        /* ===== MODAL ===== */
+        .modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(6px);
+            z-index: 999;
+            justify-content: center;
+            align-items: center;
+        }
+        .modal.active {
+            display: flex;
+        }
+        .modal-box {
+            background: #16161a;
+            border: 1px solid #2a2a2e;
+            border-radius: 20px;
+            padding: 32px;
+            max-width: 440px;
+            width: 95%;
+        }
+        .modal-box h3 {
+            font-size: 20px;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .modal-box h3 i {
+            color: #7c5cfc;
+        }
+        .modal-box input {
+            width: 100%;
+            padding: 12px 14px;
+            background: #0c0c0f;
+            border: 1px solid #2a2a2e;
+            border-radius: 10px;
+            color: #e0e0e0;
+            font-size: 14px;
+            font-family: inherit;
+            margin-bottom: 10px;
+            outline: none;
+        }
+        .modal-box input:focus {
+            border-color: #7c5cfc;
+        }
+        .modal-box .error {
+            color: #ef4444;
+            font-size: 13px;
+            margin-bottom: 10px;
+            display: none;
+        }
+        .modal-box .error.show {
+            display: block;
+        }
+        .modal-box .actions {
+            display: flex;
+            gap: 10px;
+        }
+        .modal-box .actions button {
+            flex: 1;
+            padding: 10px;
+            border: none;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 14px;
+            font-family: inherit;
+            transition: 0.2s;
+        }
+        .modal-box .actions .cancel {
+            background: #2a2a2e;
+            color: #ccc;
+        }
+        .modal-box .actions .cancel:hover {
+            background: #3a3a3e;
+        }
+        .modal-box .actions .login {
+            background: #7c5cfc;
+            color: #fff;
+        }
+        .modal-box .actions .login:hover {
+            background: #6a4ae8;
+        }
+        .modal-box .url {
+            background: #0c0c0f;
+            padding: 10px 14px;
+            border-radius: 10px;
+            font-size: 12px;
+            color: #7c5cfc;
+            word-break: break-all;
+            border: 1px solid #2a2a2e;
+            margin: 8px 0 12px;
+            font-family: monospace;
+        }
+        .modal-box .share-actions {
+            display: flex;
+            gap: 8px;
+            justify-content: flex-end;
+        }
+        .modal-box .share-actions button {
+            padding: 8px 18px;
+            border: none;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 13px;
+            font-family: inherit;
+            transition: 0.2s;
+        }
+        .modal-box .share-actions .copy {
+            background: #7c5cfc;
+            color: #fff;
+        }
+        .modal-box .share-actions .copy:hover {
+            background: #6a4ae8;
+        }
+        .modal-box .share-actions .close {
+            background: #2a2a2e;
+            color: #ccc;
+        }
+        .modal-box .share-actions .close:hover {
+            background: #3a3a3e;
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 600px) {
+            body {
+                padding: 12px;
+            }
+            .header {
+                padding: 12px 16px;
+            }
+            .header .logo {
+                font-size: 18px;
+            }
+            .header .stats {
+                font-size: 12px;
+                gap: 12px;
+            }
+            .card-body {
+                padding: 14px;
+            }
+            .toolbar button {
+                padding: 6px 12px;
+                font-size: 11px;
+            }
+            .modal-box {
+                padding: 20px;
+            }
+        }
     </style>
 </head>
 <body>
-<div class="w">
 
-<div class="h">
-    <div class="l">⚡<span>Bin</span></div>
-    <div class="st"><span>📄 <b id="t">0</b></span><span>🔢 <b id="nx">1</b></span></div>
-    <div class="u"><span class="b" id="ub">👤 Guest</span><button class="btn btn-p" id="lbi" onclick="ol()">Login</button><button class="btn btn-d" id="lbo" onclick="lo()" style="display:none">Logout</button></div>
-</div>
+    <div class="container">
 
-<div class="g">
-<div class="c">
-<div class="ch">✏️ Editor <span style="font-weight:400;color:#71717a;font-size:12px" id="cc">0 chars</span></div>
-<div class="cb">
-<div class="r">
-<div class="f"><label>📁 File</label><input type="text" id="fn" value="script.lua"></div>
-<div class="f"><label>🔢 ID</label><div class="idb"><span class="n" id="idn">1</span><span class="s" id="ids">✅ Free</span></div></div>
-</div>
-<textarea id="cd" placeholder="Paste code..."></textarea>
-<div class="tb">
-    <button class="sv" id="bsv" onclick="sv()">💾 Save</button>
-    <button class="cp" onclick="cp()">📋 Copy</button>
-    <button class="dl" onclick="dl()">⬇️ Download</button>
-    <button class="sh" onclick="sh()">🔗 Share</button>
-    <button class="rm" onclick="cl()">🗑️ Clear</button>
-</div>
-</div>
-</div>
+        <!-- ===== HEADER ===== -->
+        <div class="header">
+            <div class="logo">
+                <i class="fas fa-bolt"></i>
+                <span>CodeBin</span>
+            </div>
+            <div class="stats">
+                <span><i class="fas fa-file"></i> <b id="totalFiles">0</b></span>
+                <span><i class="fas fa-hashtag"></i> Next: <b id="nextId">1</b></span>
+            </div>
+            <div class="user">
+                <span class="badge" id="userBadge"><i class="fas fa-user"></i> Guest</span>
+                <button class="btn btn-primary" id="loginBtn" onclick="openLogin()">
+                    <i class="fas fa-sign-in-alt"></i> Login
+                </button>
+                <button class="btn btn-danger" id="logoutBtn" onclick="logout()" style="display:none;">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </button>
+            </div>
+        </div>
 
-<div class="c">
-<div class="ch">📋 Files <button onclick="da()" style="background:0 0;border:none;color:#ef4444;cursor:pointer;font-size:12px">🗑️ All</button></div>
-<div class="cb" style="padding:0"><div class="fl" id="fl"><div class="e"><i>📭</i> No files</div></div></div>
-</div>
-</div>
-</div>
+        <!-- ===== GRID ===== -->
+        <div class="grid">
 
-<div class="m" id="lm"><div class="mb"><h3>🔐 Login</h3><input type="email" id="le" placeholder="Email" value="admin@codebin.com"><input type="password" id="lp" placeholder="Password" value="123456"><div class="er" id="ler">❌ Wrong</div><div class="ma"><button class="cl" onclick="clm()">Cancel</button><button class="lg" onclick="dol()">🔑 Login</button></div></div></div>
-<div class="m" id="sm"><div class="mb"><h3>🔗 Share</h3><div class="url" id="su">...</div><div class="sa"><button class="copy" onclick="cs()">📋 Copy</button><button class="cls" onclick="csm()">Close</button></div></div></div>
-<div class="toasts" id="ts"></div>
+            <!-- ===== EDITOR ===== -->
+            <div class="card">
+                <div class="card-header">
+                    <span><i class="fas fa-pen"></i> Editor</span>
+                    <span style="font-weight:400;color:#666;font-size:12px;" id="charCount">0 chars</span>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="field">
+                            <label><i class="fas fa-tag"></i> File name</label>
+                            <input type="text" id="fileName" value="script.lua" placeholder="ten_file.lua">
+                        </div>
+                        <div class="field">
+                            <label><i class="fas fa-hashtag"></i> ID</label>
+                            <div class="idbox">
+                                <span class="num" id="idDisplay">1</span>
+                                <span class="status" id="idStatus"><i class="fas fa-check-circle"></i> Free</span>
+                            </div>
+                        </div>
+                    </div>
 
-<script>
-let files=[],eid=null,cu=null;
-const USERS={'admin@codebin.com':{password:'123456',name:'Admin'}};
+                    <textarea id="codeContent" placeholder="Paste your code here..."></textarea>
 
-function gid(){let a=localStorage.getItem('did');if(!a){a='d_'+Date.now().toString(36)+Math.random().toString(36).slice(2,5);localStorage.setItem('did',a)}return a}
-function gu(){try{let a=localStorage.getItem('cb_user');return a?JSON.parse(a):null}catch{return null}}
-function su(u){localStorage.setItem('cb_user',JSON.stringify(u));cu=u;rUI()}
-function lo(){if(!confirm('Logout?'))return;localStorage.removeItem('cb_user');cu=null;rUI();t('👋 Logged out','inf')}
-function ol(){document.getElementById('lm').classList.add('a');document.getElementById('ler').classList.remove('s')}
-function clm(){document.getElementById('lm').classList.remove('a')}
-function dol(){let e=document.getElementById('le').value.trim(),p=document.getElementById('lp').value.trim();if(!e||!p){document.getElementById('ler').textContent='❌ Please fill all';document.getElementById('ler').classList.add('s');return}let u=USERS[e];if(!u||u.password!==p){document.getElementById('ler').textContent='❌ Wrong email/password';document.getElementById('ler').classList.add('s');return}su({email:e,name:u.name||e.split('@')[0]});clm();t('✅ Logged in as '+u.name,'ok');rUI()}
-function rUI(){let u=gu();cu=u;document.getElementById('ub').textContent=u?'👤 '+u.name:'👤 Guest ('+gid().slice(0,8)+')';document.getElementById('lbi').style.display=u?'none':'inline-block';document.getElementById('lbo').style.display=u?'inline-block':'none';let ta=document.getElementById('cd'),sv=document.getElementById('bsv');if(u){ta.disabled=false;sv.disabled=false;document.querySelectorAll('.tb button').forEach(b=>b.disabled=false)}else{ta.disabled=true;sv.disabled=true;document.querySelectorAll('.tb button:not(.cp):not(.dl):not(.sh)').forEach(b=>b.disabled=true)}r()}
-function ld(){try{let a=localStorage.getItem('cb_files');if(a)files=JSON.parse(a)}catch{}r()}
-function sd(){localStorage.setItem('cb_files',JSON.stringify(files));r()}
-function gn(){if(!files.length)return 1;let a=files.map(f=>f.id).sort((a,b)=>a-b),n=1;for(let i of a){if(i===n)n++;else break}return n}
-function ui(){let n=gn();document.getElementById('idn').textContent=n;document.getElementById('nx').textContent=n;let st=document.getElementById('ids');if(!cu){st.textContent='🔒 Read Only';st.className='s l'}else if(eid){st.textContent='✏️ #'+eid;st.className='s e'}else{st.textContent='✅ Free';st.className='s'}}
-function r(){let list=document.getElementById('fl');document.getElementById('t').textContent=files.length;ui();document.getElementById('cc').textContent=document.getElementById('cd').value.length+' chars';if(!files.length){list.innerHTML='<div class="e"><i>📭</i> No files</div>';return}let s=[...files].sort((a,b)=>b.id-a.id);list.innerHTML=s.map(f=>`<div class="it" onclick="ldf(${f.id})"><div class="ic">${icn(f.name)}</div><div class="in"><div class="nm">${esc(f.name)}</div><div class="mt"><span class="id">#${f.id}</span><span>${new Date(f.updated||f.created).toLocaleDateString()}</span><span>${(f.content||'').length} chars</span><span><a href="/raw/${f.id}/${f.name}" target="_blank" class="rw">🔗 raw</a></span></div></div><div class="ac"><button onclick="event.stopPropagation();ldf(${f.id})">✏️</button><button class="x" onclick="event.stopPropagation();dlf(${f.id})">🗑️</button></div></div>`).join('')}
-function icn(n){let e=(n||'').split('.').pop().toLowerCase();let m={lua:'📜',js:'🟨',py:'🐍',html:'🌐',css:'🎨',json:'📋',txt:'📄',md:'📝',sh:'💻',go:'🐹',rs:'🦀'};return m[e]||'📄'}
-function esc(t){let d=document.createElement('div');d.textContent=t;return d.innerHTML}
-function sv(){if(!cu){t('🔒 Login required!','err');return}let n=document.getElementById('fn').value.trim()||'untitled.txt',c=document.getElementById('cd').value;if(!c.trim()){t('Content empty!','err');return}if(eid){let i=files.findIndex(f=>f.id===eid);if(i!==-1){files[i]={...files[i],name:n,content:c,updated:Date.now()};t('✅ Updated #'+eid,'ok')}eid=null}else{let id=gn();files.push({id,name:n,content:c,created:Date.now(),updated:Date.now()});t('✅ Saved #'+id+': '+n,'ok')}sd();document.getElementById('cd').value='';document.getElementById('fn').value='script.lua';r()}
-function ldf(id){let f=files.find(x=>x.id===id);if(!f)return;if(!cu){document.getElementById('fn').value=f.name;document.getElementById('cd').value=f.content;document.getElementById('cd').disabled=true;document.getElementById('bsv').disabled=true;document.getElementById('idn').textContent=f.id;document.getElementById('ids').textContent='🔒 Read Only';document.getElementById('ids').className='s l';t('📂 Viewing: '+f.name,'inf');return}eid=id;document.getElementById('fn').value=f.name;document.getElementById('cd').value=f.content;document.getElementById('cd').disabled=false;document.getElementById('bsv').disabled=false;r();document.getElementById('cd').focus();t('📂 Loaded: '+f.name,'inf')}
-function dlf(id){if(!cu){t('🔒 Login required!','err');return}if(!confirm('Delete #'+id+'?'))return;let f=files.find(x=>x.id===id);files=files.filter(x=>x.id!==id);sd();if(eid===id){eid=null;r()}t('🗑️ Deleted: '+(f?.name||'file'),'err')}
-function da(){if(!cu){t('🔒 Login required!','err');return}if(!files.length)return;if(!confirm('Delete ALL?'))return;files=[];sd();eid=null;r();t('🗑️ All deleted','err')}
-function cl(){if(document.getElementById('cd').value&&!confirm('Clear editor?'))return;document.getElementById('cd').value='';document.getElementById('fn').value='script.lua';eid=null;r();t('🧹 Cleared','inf')}
-function cp(){let c=document.getElementById('cd').value;if(!c){t('Nothing to copy!','err');return}navigator.clipboard?.writeText(c).then(()=>t('📋 Copied!','ok')).catch(()=>{let ta=document.createElement('textarea');ta.value=c;document.body.appendChild(ta);ta.select();document.execCommand('copy');ta.remove();t('📋 Copied!','ok')})}
-function dl(){let c=document.getElementById('cd').value,n=document.getElementById('fn').value||'script.txt';if(!c){t('Nothing to download!','err');return}let blob=new Blob([c],{type:'text/plain'}),a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=n;a.click();URL.revokeObjectURL(a.href);t('⬇️ Downloaded','ok')}
-function sh(){let c=document.getElementById('cd').value,n=document.getElementById('fn').value||'script.txt';if(!c){t('Nothing to share!','err');return}let d=btoa(encodeURIComponent(JSON.stringify({name:n,content:c}))),u=window.location.href.split('?')[0]+'?c='+d;document.getElementById('su').textContent=u;document.getElementById('sm').classList.add('a')}
-function cs(){let u=document.getElementById('su').textContent;navigator.clipboard?.writeText(u).then(()=>t('🔗 Link copied!','ok')).catch(()=>{let ta=document.createElement('textarea');ta.value=u;document.body.appendChild(ta);ta.select();document.execCommand('copy');ta.remove();t('🔗 Link copied!','ok')})}
-function csm(){document.getElementById('sm').classList.remove('a')}
-function t(msg,type='inf'){let box=document.getElementById('ts'),el=document.createElement('div');el.className='toast '+type;let ic={ok:'✅',err:'❌',inf:'ℹ️'};el.innerHTML=ic[type]+' '+msg;box.appendChild(el);setTimeout(()=>{el.style.opacity='0';el.style.transform='translateX(30px)';el.style.transition='.3s';setTimeout(()=>el.remove(),300)},2000)}
-function lfu(){let p=new URLSearchParams(window.location.search),d=p.get('c');if(!d)return;try{let raw=JSON.parse(decodeURIComponent(atob(d)));document.getElementById('fn').value=raw.name||'shared.lua';document.getElementById('cd').value=raw.content||'';t('📂 Loaded from link!','ok');window.history.replaceState({},document.title,window.location.pathname)}catch{t('Invalid link!','err')}}
-function hr(){let p=window.location.pathname,ps=p.split('/').filter(a=>a);if(ps.length>=2&&ps[0]==='raw'){let id=parseInt(ps[1]),name=ps.slice(2).join('/')||'untitled.txt',content='';try{let d=localStorage.getItem('cb_files');if(d){let all=JSON.parse(d),f=all.find(x=>x.id===id);if(f)content=f.content||'';else content='// File #'+id+' not found'}else content='// No data'}catch{}document.documentElement.innerHTML='<pre style="margin:0;padding:20px;background:#09090b;color:#e4e4e7;font-family:Courier New,monospace;font-size:14px;min-height:100vh;white-space:pre-wrap;word-break:break-all;">'+content+'</pre>';document.title='Raw: '+name}}
-document.addEventListener('keydown',e=>{if((e.ctrlKey||e.metaKey)&&e.key==='s'){e.preventDefault();sv()}if(e.key==='Escape'){clm();csm()}});
-document.getElementById('cd').addEventListener('input',()=>{document.getElementById('cc').textContent=document.getElementById('cd').value.length+' chars'});
-ld();lfu();hr();rUI();
-</script>
+                    <div class="toolbar">
+                        <button class="save" id="btnSave" onclick="save()"><i class="fas fa-save"></i> Save</button>
+                        <button class="copy" onclick="copyCode()"><i class="fas fa-copy"></i> Copy</button>
+                        <button class="download" onclick="download()"><i class="fas fa-download"></i> Download</button>
+                        <button class="share" onclick="share()"><i class="fas fa-share-alt"></i> Share</button>
+                        <button class="clear" onclick="clearEditor()"><i class="fas fa-trash"></i> Clear</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ===== FILE LIST ===== -->
+            <div class="card">
+                <div class="card-header">
+                    <span><i class="fas fa-list"></i> Files</span>
+                    <button onclick="deleteAll()" style="background:transparent;border:none;color:#ef4444;cursor:pointer;font-size:12px;">
+                        <i class="fas fa-trash-alt"></i> All
+                    </button>
+                </div>
+                <div class="card-body" style="padding:0;">
+                    <div class="filelist" id="fileList">
+                        <div class="empty">
+                            <i class="fas fa-inbox"></i>
+                            No files yet
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- ===== LOGIN MODAL ===== -->
+    <div class="modal" id="loginModal">
+        <div class="modal-box">
+            <h3><i class="fas fa-lock"></i> Login</h3>
+            <input type="email" id="loginEmail" placeholder="Email" value="admin@codebin.com">
+            <input type="password" id="loginPassword" placeholder="Password" value="123456">
+            <div class="error" id="loginError"><i class="fas fa-exclamation-circle"></i> Wrong email or password!</div>
+            <div class="actions">
+                <button class="cancel" onclick="closeLogin()"><i class="fas fa-times"></i> Cancel</button>
+                <button class="login" onclick="doLogin()"><i class="fas fa-sign-in-alt"></i> Login</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== SHARE MODAL ===== -->
+    <div class="modal" id="shareModal">
+        <div class="modal-box">
+            <h3><i class="fas fa-link"></i> Share Link</h3>
+            <div class="url" id="shareUrl">Loading...</div>
+            <div class="share-actions">
+                <button class="copy" onclick="copyShare()"><i class="fas fa-copy"></i> Copy</button>
+                <button class="close" onclick="closeShare()"><i class="fas fa-times"></i> Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== TOASTS ===== -->
+    <div class="toasts" id="toasts"></div>
+
+    <script>
+        // ============================================================
+        // DATA
+        // ============================================================
+        let files = [];
+        let editingId = null;
+        let currentUser = null;
+
+        const USERS = {
+            'admin@codebin.com': { password: '123456', name: 'Admin' },
+            'user@codebin.com': { password: '123456', name: 'User' }
+        };
+
+        // ============================================================
+        // AUTH
+        // ============================================================
+        function getDeviceId() {
+            let id = localStorage.getItem('device_id');
+            if (!id) {
+                id = 'd_' + Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
+                localStorage.setItem('device_id', id);
+            }
+            return id;
+        }
+
+        function getUser() {
+            try {
+                const data = localStorage.getItem('codebin_user');
+                return data ? JSON.parse(data) : null;
+            } catch {
+                return null;
+            }
+        }
+
+        function saveUser(user) {
+            localStorage.setItem('codebin_user', JSON.stringify(user));
+            currentUser = user;
+            updateUI();
+        }
+
+        function logout() {
+            if (!confirm('Logout?')) return;
+            localStorage.removeItem('codebin_user');
+            currentUser = null;
+            updateUI();
+            toast('👋 Logged out', 'info');
+        }
+
+        function openLogin() {
+            document.getElementById('loginModal').classList.add('active');
+            document.getElementById('loginError').classList.remove('show');
+        }
+
+        function closeLogin() {
+            document.getElementById('loginModal').classList.remove('active');
+        }
+
+        function doLogin() {
+            const email = document.getElementById('loginEmail').value.trim();
+            const password = document.getElementById('loginPassword').value.trim();
+
+            if (!email || !password) {
+                document.getElementById('loginError').textContent = '❌ Please enter email and password!';
+                document.getElementById('loginError').classList.add('show');
+                return;
+            }
+
+            const user = USERS[email];
+            if (!user || user.password !== password) {
+                document.getElementById('loginError').textContent = '❌ Wrong email or password!';
+                document.getElementById('loginError').classList.add('show');
+                return;
+            }
+
+            saveUser({ email, name: user.name || email.split('@')[0] });
+            closeLogin();
+            toast('✅ Logged in as ' + user.name, 'ok');
+            updateUI();
+        }
+
+        function updateUI() {
+            const user = getUser();
+            currentUser = user;
+
+            const badge = document.getElementById('userBadge');
+            const loginBtn = document.getElementById('loginBtn');
+            const logoutBtn = document.getElementById('logoutBtn');
+            const textarea = document.getElementById('codeContent');
+            const saveBtn = document.getElementById('btnSave');
+
+            if (user) {
+                badge.innerHTML = '<i class="fas fa-user-check"></i> ' + user.name;
+                loginBtn.style.display = 'none';
+                logoutBtn.style.display = 'inline-block';
+                textarea.disabled = false;
+                saveBtn.disabled = false;
+                document.querySelectorAll('.toolbar button').forEach(b => b.disabled = false);
+            } else {
+                badge.innerHTML = '<i class="fas fa-user"></i> Guest (' + getDeviceId().slice(0, 8) + ')';
+                loginBtn.style.display = 'inline-block';
+                logoutBtn.style.display = 'none';
+                textarea.disabled = true;
+                saveBtn.disabled = true;
+                document.querySelectorAll('.toolbar button:not(.copy):not(.download):not(.share)').forEach(b => b.disabled =
+                true);
+            }
+            render();
+        }
+
+        // ============================================================
+        // STORAGE
+        // ============================================================
+        function loadData() {
+            try {
+                const data = localStorage.getItem('codebin_files');
+                if (data) files = JSON.parse(data);
+            } catch {
+                files = [];
+            }
+            render();
+        }
+
+        function saveData() {
+            localStorage.setItem('codebin_files', JSON.stringify(files));
+            render();
+        }
+
+        // ============================================================
+        // ID
+        // ============================================================
+        function getNextId() {
+            if (!files.length) return 1;
+            const ids = files.map(f => f.id).sort((a, b) => a - b);
+            let n = 1;
+            for (const id of ids) {
+                if (id === n) n++;
+                else break;
+            }
+            return n;
+        }
+
+        function updateId() {
+            const n = getNextId();
+            document.getElementById('idDisplay').textContent = n;
+            document.getElementById('nextId').textContent = n;
+
+            const status = document.getElementById('idStatus');
+            if (!currentUser) {
+                status.innerHTML = '<i class="fas fa-lock"></i> Read Only';
+                status.className = 'status lock';
+            } else if (editingId) {
+                status.innerHTML = '<i class="fas fa-pen"></i> #' + editingId;
+                status.className = 'status edit';
+            } else {
+                status.innerHTML = '<i class="fas fa-check-circle"></i> Free';
+                status.className = 'status';
+            }
+        }
+
+        // ============================================================
+        // RENDER
+        // ============================================================
+        function render() {
+            const list = document.getElementById('fileList');
+            document.getElementById('totalFiles').textContent = files.length;
+            updateId();
+            document.getElementById('charCount').textContent = document.getElementById('codeContent').value.length + ' chars';
+
+            if (!files.length) {
+                list.innerHTML = `
+                    <div class="empty">
+                        <i class="fas fa-inbox"></i>
+                        No files yet
+                    </div>
+                `;
+                return;
+            }
+
+            const sorted = [...files].sort((a, b) => b.id - a.id);
+            list.innerHTML = sorted.map(f => `
+                <div class="item" onclick="loadFile(${f.id})">
+                    <div class="icon">${getIcon(f.name)}</div>
+                    <div class="info">
+                        <div class="name">${escapeHtml(f.name)}</div>
+                        <div class="meta">
+                            <span class="id">#${f.id}</span>
+                            <span>${new Date(f.updated || f.created).toLocaleDateString()}</span>
+                            <span>${(f.content || '').length} chars</span>
+                            <span><a href="/raw/${f.id}/${f.name}" target="_blank" class="raw"><i class="fas fa-link"></i> raw</a></span>
+                        </div>
+                    </div>
+                    <div class="actions">
+                        <button onclick="event.stopPropagation();loadFile(${f.id})" title="Edit"><i class="fas fa-pen"></i></button>
+                        <button class="del" onclick="event.stopPropagation();deleteFile(${f.id})" title="Delete"><i class="fas fa-trash"></i></button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function getIcon(name) {
+            const ext = (name || '').split('.').pop().toLowerCase();
+            const map = {
+                lua: '📜',
+                js: '🟨',
+                py: '🐍',
+                html: '🌐',
+                css: '🎨',
+                json: '📋',
+                txt: '📄',
+                md: '📝',
+                sh: '💻',
+                go: '🐹',
+                rs: '🦀'
+            };
+            return map[ext] || '📄';
+        }
+
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        // ============================================================
+        // CRUD
+        // ============================================================
+        function save() {
+            if (!currentUser) {
+                toast('🔒 Login required!', 'err');
+                return;
+            }
+
+            const name = document.getElementById('fileName').value.trim() || 'untitled.txt';
+            const content = document.getElementById('codeContent').value;
+
+            if (!content.trim()) {
+                toast('Content is empty!', 'err');
+                return;
+            }
+
+            if (editingId) {
+                const idx = files.findIndex(f => f.id === editingId);
+                if (idx !== -1) {
+                    files[idx] = { ...files[idx], name, content, updated: Date.now() };
+                    toast('✅ Updated #' + editingId, 'ok');
+                }
+                editingId = null;
+            } else {
+                const id = getNextId();
+                files.push({ id, name, content, created: Date.now(), updated: Date.now() });
+                toast('✅ Saved #' + id + ': ' + name, 'ok');
+            }
+
+            saveData();
+            document.getElementById('codeContent').value = '';
+            document.getElementById('fileName').value = 'script.lua';
+            render();
+        }
+
+        function loadFile(id) {
+            const file = files.find(f => f.id === id);
+            if (!file) return;
+
+            if (!currentUser) {
+                document.getElementById('fileName').value = file.name;
+                document.getElementById('codeContent').value = file.content;
+                document.getElementById('codeContent').disabled = true;
+                document.getElementById('btnSave').disabled = true;
+                document.getElementById('idDisplay').textContent = file.id;
+                document.getElementById('idStatus').innerHTML = '<i class="fas fa-lock"></i> Read Only';
+                document.getElementById('idStatus').className = 'status lock';
+                toast('📂 Viewing: ' + file.name + ' (Read Only)', 'info');
+                return;
+            }
+
+            editingId = id;
+            document.getElementById('fileName').value = file.name;
+            document.getElementById('codeContent').value = file.content;
+            document.getElementById('codeContent').disabled = false;
+            document.getElementById('btnSave').disabled = false;
+            render();
+            document.getElementById('codeContent').focus();
+            toast('📂 Loaded: ' + file.name, 'info');
+        }
+
+        function deleteFile(id) {
+            if (!currentUser) {
+                toast('🔒 Login required!', 'err');
+                return;
+            }
+            if (!confirm('Delete #' + id + '?')) return;
+            const file = files.find(f => f.id === id);
+            files = files.filter(f => f.id !== id);
+            saveData();
+            if (editingId === id) {
+                editingId = null;
+                render();
+            }
+            toast('🗑️ Deleted: ' + (file?.name || 'file'), 'err');
+        }
+
+        function deleteAll() {
+            if (!currentUser) {
+                toast('🔒 Login required!', 'err');
+                return;
+            }
+            if (!files.length) return;
+            if (!confirm('Delete ALL files?')) return;
+            files = [];
+            saveData();
+            editingId = null;
+            render();
+            toast('🗑️ All files deleted', 'err');
+        }
+
+        function clearEditor() {
+            if (document.getElementById('codeContent').value && !confirm('Clear editor?')) return;
+            document.getElementById('codeContent').value = '';
+            document.getElementById('fileName').value = 'script.lua';
+            editingId = null;
+            render();
+            toast('🧹 Editor cleared', 'info');
+        }
+
+        // ============================================================
+        // COPY
+        // ============================================================
+        function copyCode() {
+            const content = document.getElementById('codeContent').value;
+            if (!content) {
+                toast('Nothing to copy!', 'err');
+                return;
+            }
+            navigator.clipboard?.writeText(content)
+                .then(() => toast('📋 Copied!', 'ok'))
+                .catch(() => {
+                    const ta = document.createElement('textarea');
+                    ta.value = content;
+                    document.body.appendChild(ta);
+                    ta.select();
+                    document.execCommand('copy');
+                    ta.remove();
+                    toast('📋 Copied!', 'ok');
+                });
+        }
+
+        // ============================================================
+        // DOWNLOAD
+        // ============================================================
+        function download() {
+            const content = document.getElementById('codeContent').value;
+            const name = document.getElementById('fileName').value || 'script.txt';
+            if (!content) {
+                toast('Nothing to download!', 'err');
+                return;
+            }
+            const blob = new Blob([content], { type: 'text/plain' });
+            const a = document.createElement('a');
+            a.href = URL.createObjectURL(blob);
+            a.download = name;
+            a.click();
+            URL.revokeObjectURL(a.href);
+            toast('⬇️ Downloaded', 'ok');
+        }
+
+        // ============================================================
+        // SHARE
+        // ============================================================
+        function share() {
+            const content = document.getElementById('codeContent').value;
+            const name = document.getElementById('fileName').value || 'script.txt';
+            if (!content) {
+                toast('Nothing to share!', 'err');
+                return;
+            }
+            const data = btoa(encodeURIComponent(JSON.stringify({ name, content })));
+            const url = window.location.href.split('?')[0] + '?c=' + data;
+            document.getElementById('shareUrl').textContent = url;
+            document.getElementById('shareModal').classList.add('active');
+        }
+
+        function copyShare() {
+            const url = document.getElementById('shareUrl').textContent;
+            navigator.clipboard?.writeText(url)
+                .then(() => toast('🔗 Link copied!', 'ok'))
+                .catch(() => {
+                    const ta = document.createElement('textarea');
+                    ta.value = url;
+                    document.body.appendChild(ta);
+                    ta.select();
+                    document.execCommand('copy');
+                    ta.remove();
+                    toast('🔗 Link copied!', 'ok');
+                });
+        }
+
+        function closeShare() {
+            document.getElementById('shareModal').classList.remove('active');
+        }
+
+        // ============================================================
+        // TOAST
+        // ============================================================
+        function toast(msg, type = 'info') {
+            const box = document.getElementById('toasts');
+            const t = document.createElement('div');
+            t.className = 'toast ' + type;
+            const icons = { ok: '✅', err: '❌', info: 'ℹ️' };
+            t.innerHTML = icons[type] + ' ' + msg;
+            box.appendChild(t);
+            setTimeout(() => {
+                t.style.opacity = '0';
+                t.style.transform = 'translateX(30px)';
+                t.style.transition = '0.3s';
+                setTimeout(() => t.remove(), 300);
+            }, 2200);
+        }
+
+        // ============================================================
+        // LOAD FROM URL
+        // ============================================================
+        function loadFromUrl() {
+            const params = new URLSearchParams(window.location.search);
+            const data = params.get('c');
+            if (!data) return;
+            try {
+                const raw = JSON.parse(decodeURIComponent(atob(data)));
+                document.getElementById('fileName').value = raw.name || 'shared.lua';
+                document.getElementById('codeContent').value = raw.content || '';
+                toast('📂 Loaded from link!', 'ok');
+                window.history.replaceState({}, document.title, window.location.pathname);
+            } catch {
+                toast('Invalid link!', 'err');
+            }
+        }
+
+        // ============================================================
+        // RAW HANDLER - CHỈ TEXT THUẦN, KHÔNG HTML CSS JS
+        // ============================================================
+        function handleRaw() {
+            const path = window.location.pathname;
+            const parts = path.split('/').filter(p => p);
+            
+            if (parts.length >= 2 && parts[0] === 'raw') {
+                const id = parseInt(parts[1]);
+                const name = parts.slice(2).join('/') || 'untitled.txt';
+                
+                let content = '';
+                try {
+                    const data = localStorage.getItem('codebin_files');
+                    if (data) {
+                        const all = JSON.parse(data);
+                        const file = all.find(f => f.id === id);
+                        if (file) {
+                            content = file.content || '';
+                        } else {
+                            content = '// File #' + id + ' not found';
+                        }
+                    } else {
+                        content = '// No data found';
+                    }
+                } catch {
+                    content = '// Error loading data';
+                }
+
+                // Xóa toàn bộ HTML, chỉ hiển thị text thuần
+                document.documentElement.innerHTML = `<pre style="margin:0;padding:24px;background:#0c0c0f;color:#e0e0e0;font-family:'Courier New',monospace;font-size:14px;min-height:100vh;white-space:pre-wrap;word-break:break-all;">${content}</pre>`;
+                document.title = 'Raw: ' + name;
+            }
+        }
+
+        // ============================================================
+        // KEYBOARD SHORTCUTS
+        // ============================================================
+        document.addEventListener('keydown', (e) => {
+            if ((e.ctrlKey || e.metaKey) && e.key === 's') {
+                e.preventDefault();
+                save();
+            }
+            if (e.key === 'Escape') {
+                closeLogin();
+                closeShare();
+            }
+        });
+
+        // ============================================================
+        // AUTO UPDATE CHAR COUNT
+        // ============================================================
+        document.getElementById('codeContent').addEventListener('input', () => {
+            document.getElementById('charCount').textContent = document.getElementById('codeContent').value.length + ' chars';
+        });
+
+        // ============================================================
+        // INIT
+        // ============================================================
+        loadData();
+        loadFromUrl();
+        handleRaw();
+        updateUI();
+    </script>
 </body>
-  </html>
+</html>
