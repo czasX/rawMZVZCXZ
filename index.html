@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RawBin</title>
+    <style>
+        *{margin:0;padding:0;box-sizing:border-box}
+        body{background:#0a0a0a;color:#ccc;font-family:monospace;padding:20px}
+        .w{max-width:1100px;margin:0 auto}
+        .h{display:flex;justify-content:space-between;align-items:center;padding:12px 20px;background:#111;border:1px solid #222;border-radius:8px;margin-bottom:16px;flex-wrap:wrap;gap:8px}
+        .h .l{font-size:20px;font-weight:700;color:#fff}
+        .h .s{font-size:13px;color:#666;display:flex;gap:16px}
+        .h .s b{color:#fff}
+        .h .u{display:flex;align-items:center;gap:8px;font-size:13px}
+        .h .u .b{color:#666}
+        .btn{padding:6px 16px;border:none;border-radius:6px;font-weight:600;font-size:13px;cursor:pointer;font-family:monospace}
+        .btn-g{background:#2a2a2a;color:#fff}
+        .btn-g:hover{background:#3a3a3a}
+        .btn-p{background:#6c5ce7;color:#fff}
+        .btn-p:hover{background:#5a4bd1}
+        .btn-r{background:#e74c3c;color:#fff}
+        .btn-r:hover{background:#c0392b}
+        .g{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+        @media(max-width:768px){.g{grid-template-columns:1fr}}
+        .c{background:#111;border:1px solid #222;border-radius:8px;overflow:hidden}
+        .ch{padding:10px 16px;border-bottom:1px solid #222;font-weight:600;font-size:14px;background:#0d0d0d}
+        .cb{padding:14px}
+        .r{display:grid;grid-template-columns:2fr 1fr;gap:10px;margin-bottom:10px}
+        @media(max-width:500px){.r{grid-template-columns:1fr}}
+        .f label{display:block;font-size:11px;color:#666;margin-bottom:4px}
+        .f input{width:100%;padding:10px 14px;background:#0a0a0a;border:1px solid #222;border-radius:6px;color:#fff;font-size:14px;font-family:monospace;outline:none}
+        .f input:focus{border-color:#6c5ce7}
+        .idb{display:flex;align-items:center;gap:12px;padding:8px 14px;background:#0a0a0a;border:1px solid #222;border-radius:6px;height:42px}
+        .idb .n{font-size:22px;font-weight:700;color:#6c5ce7}
+        .idb .st{font-size:11px;padding:2px 10px;border-radius:10px;margin-left:auto;background:#1a1a1a;color:#666}
+        textarea{width:100%;min-height:340px;padding:14px;background:#0a0a0a;border:1px solid #222;border-radius:6px;color:#fff;font-family:monospace;font-size:13px;line-height:1.7;resize:vertical;outline:none}
+        textarea:focus{border-color:#6c5ce7}
+        textarea:disabled{opacity:0.4;cursor:not-allowed}
+        .tb{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}
+        .tb button{padding:8px 14px;border:none;border-radius:6px;font-weight:600;font-size:12px;cursor:pointer;font-family:monospace}
+        .tb button:disabled{opacity:0.3;cursor:not-allowed}
+        .tb .sv{background:#6c5ce7;color:#fff}
+        .tb .sv:hover:not(:disabled){background:#5a4bd1}
+        .tb .cp{background:#2a2a2a;color:#fff}
+        .tb .cp:hover:not(:disabled){background:#3a3a3a}
+        .tb .dl{background:#00b894;color:#fff}
+        .tb .dl:hover:not(:disabled){background:#00a381}
+        .tb .sh{background:#fdcb6e;color:#0a0a0a}
+        .tb .sh:hover:not(:disabled){background:#fdcb6e}
+        .tb .cl{background:#e74c3c;color:#fff}
+        .tb .cl:hover:not(:disabled){background:#c0392b}
+        .fl{max-height:380px;overflow-y:auto}
+        .fl::-webkit-scrollbar{width:4px}
+        .fl::-webkit-scrollbar-thumb{background:#222;border-radius:4px}
+        .it{display:flex;align-items:center;padding:8px 14px;border-bottom:1px solid #1a1a1a;gap:10px;cursor:pointer}
+        .it:hover{background:rgba(255,255,255,0.02)}
+        .it .ic{font-size:18px;width:28px;text-align:center}
+        .it .in{flex:1;min-width:0}
+        .it .in .nm{font-size:13px;font-weight:500}
+        .it .in .mt{font-size:11px;color:#555;display:flex;gap:10px;flex-wrap:wrap}
+        .it .in .mt .id{color:#6c5ce7}
+        .it .in .mt .rw{color:#00b894;text-decoration:none}
+        .it .in .mt .rw:hover{text-decoration:underline}
+        .it .ac{display:flex;gap:4px}
+        .it .ac button{padding:2px 8px;border:none;border-radius:4px;background:0 0;color:#555;cursor:pointer;font-size:12px}
+        .it .ac button:hover{color:#fff}
+        .it .ac .x:hover{color:#e74c3c}
+        .e{text-align:center;padding:40px 16px;color:#444;font-size:14px}
+        .e i{font-size:32px;opacity:0.2;display:block;margin-bottom:8px}
+        .toasts{position:fixed;bottom:20px;right:20px;z-index:999;display:flex;flex-direction:column;gap:6px}
+        .toast{padding:10px 18px;border-radius:8px;font-size:13px;background:#111;border:1px solid #222;animation:p .25s ease}
+        .toast.ok{border-color:#00b894;color:#00b894}
+        .toast.err{border-color:#e74c3c;color:#e74c3c}
+        .toast.inf{border-color:#6c5ce7;color:#6c5ce7}
+        @keyframes p{from{transform:translateX(30px);opacity:0}to{transform:translateX(0);opacity:1}}
+        .m{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:99;justify-content:center;align-items:center}
+        .m.a{display:flex}
+        .mb{background:#111;border:1px solid #222;border-radius:12px;padding:24px;max-width:400px;width:95%}
+        .mb h3{font-size:18px;margin-bottom:14px;color:#fff}
+        .mb input{width:100%;padding:10px 14px;background:#0a0a0a;border:1px solid #222;border-radius:6px;color:#fff;font-size:14px;font-family:monospace;margin-bottom:10px;outline:none}
+        .mb input:focus{border-color:#6c5ce7}
+        .mb .er{color:#e74c3c;font-size:13px;margin-bottom:10px;display:none}
+        .mb .er.s{display:block}
+        .mb .ma{display:flex;gap:10px}
+        .mb .ma button{flex:1;padding:10px;border:none;border-radius:6px;font-weight:600;cursor:pointer;font-size:14px;font-family:monospace}
+        .mb .ma .ca{background:#2a2a2a;color:#fff}
+        .mb .ma .ca:hover{background:#3a3a3a}
+        .mb .ma .lo{background:#6c5ce7;color:#fff}
+        .mb .ma .lo:hover{background:#5a4bd1}
+        .mb .url{background:#0a0a0a;padding:10px 14px;border-radius:6px;font-size:12px;color:#6c5ce7;word-break:break-all;border:1px solid #222;margin:8px 0 12px;font-family:monospace}
+        .mb .sa{display:flex;gap:8px;justify-content:flex-end}
+        .mb .sa button{padding:8px 18px;border:none;border-radius:6px;font-weight:600;cursor:pointer;font-size:13px;font-family:monospace}
+        .mb .sa .co{background:#6c5ce7;color:#fff}
+        .mb .sa .co:hover{background:#5a4bd1}
+        .mb .sa .cl{background:#2a2a2a;color:#fff}
+        .mb .sa .cl:hover{background:#3a3a3a}
+    </style>
+</head>
+<body>
+<div class="w">
+
+<div class="h">
+    <div class="l">⚡Bin</div>
+    <div class="s"><span>📄 <b id="t">0</b></span><span>🔢 <b id="nx">1</b></span></div>
+    <div class="u"><span class="b" id="ub">👤 Guest</span><button class="btn btn-p" id="lbi" onclick="ol()">Login</button><button class="btn btn-r" id="lbo" onclick="lo()" style="display:none">Logout</button></div>
+</div>
+
+<div class="g">
+<div class="c">
+<div class="ch">✏️ Editor <span style="font-weight:400;color:#555;font-size:12px" id="cc">0 chars</span></div>
+<div class="cb">
+<div class="r">
+<div class="f"><label>📁 File</label><input type="text" id="fn" value="script.lua"></div>
+<div class="f"><label>🔢 ID</label><div class="idb"><span class="n" id="idn">1</span><span class="st" id="ids">✅ Free</span></div></div>
+</div>
+<textarea id="cd" placeholder="Paste code..."></textarea>
+<div class="tb">
+    <button class="sv" id="bsv" onclick="sv()">💾 Save</button>
+    <button class="cp" onclick="cp()">📋 Copy</button>
+    <button class="dl" onclick="dl()">⬇️ Download</button>
+    <button class="sh" onclick="sh()">🔗 Share</button>
+    <button class="cl" onclick="cl()">🗑️ Clear</button>
+</div>
+</div>
+</div>
+
+<div class="c">
+<div class="ch">📋 Files <button onclick="da()" style="background:0 0;border:none;color:#e74c3c;cursor:pointer;font-size:12px">🗑️ All</button></div>
+<div class="cb" style="padding:0"><div class="fl" id="fl"><div class="e"><i>📭</i> No files</div></div></div>
+</div>
+</div>
+</div>
+
+<div class="m" id="lm"><div class="mb"><h3>🔐 Login / Register</h3><input type="email" id="le" placeholder="Email"><input type="password" id="lp" placeholder="Password"><div class="er" id="ler">❌ Wrong</div><div class="ma"><button class="ca" onclick="clm()">Cancel</button><button class="lo" onclick="dol()">🔑 Login</button></div></div></div>
+<div class="m" id="sm"><div class="mb"><h3>🔗 Share</h3><div class="url" id="su">...</div><div class="sa"><button class="co" onclick="cs()">📋 Copy</button><button class="cl" onclick="csm()">Close</button></div></div></div>
+<div class="toasts" id="ts"></div>
+
+<script>
+// ============================================================
+// DATA
+// ============================================================
+let files = [];
+let editingId = null;
+let currentUser = null;
+let users = {};
+
+// ============================================================
+// LOAD USERS
+// ============================================================
+function loadUsers() {
+    try {
+        const d = localStorage.getItem('cb_users');
+        if (d) users = JSON.parse(d);
+    } catch { users = {}; }
+}
+
+function saveUsers() {
+    localStorage.setItem('cb_users', JSON.stringify(users));
+}
+
+// ============================================================
+// AUTH
+// ============================================================
+function getDeviceId() {
+    let id = localStorage.getItem('did');
+    if (!id) {
+        id = 'd_' + Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
+        localStorage.setItem('did', id);
+    }
+    return id;
+}
+
+function getUser() {
+    try {
+        const d = localStorage.getItem('cb_user');
+        return d ? JSON.parse(d) : null;
+    } catch { return null; }
+}
+
+function saveUser(u) {
+    localStorage.setItem('cb_user', JSON.stringify(u));
+    currentUser = u;
+    rUI();
+}
+
+function lo() {
+    if (!confirm('Logout?')) return;
+    localStorage.removeItem('cb_user');
+    currentUser = null;
+    rUI();
+    t('👋 Logged out', 'inf');
+}
+
+function ol() {
+    document.getElementById('lm').classList.add('a');
+    document.getElementById('ler').classList.remove('s');
+}
+
+function clm() {
+    document.getElementById('lm').classList.remove('a');
+}
+
+function dol() {
+    const e = document.getElementById('le').value.trim();
+    const p = document.getElementById('lp').value.trim();
+    
+    if (!e || !p) {
+        document.getElementById('ler').textContent = '❌ Please fill all';
+        document.getElementById('ler').classList.add('s');
+        return;
+    }
+    
+    loadUsers();
+    
+    // REGISTER
+    if (!users[e]) {
+        users[e] = { password: p, name: e.split('@')[0] || 'User' };
+        saveUsers();
+        saveUser({ email: e, name: users[e].name });
+        clm();
+        t('✅ Registered as ' + users[e].name, 'ok');
+        rUI();
+        return;
+    }
+    
+    // LOGIN
+    if (users[e].password !== p) {
+        document.getElementById('ler').textContent = '❌ Wrong password!';
+        document.getElementById('ler').classList.add('s');
+        return;
+    }
+    
+    saveUser({ email: e, name: users[e].name });
+    clm();
+    t('✅ Logged in as ' + users[e].name, 'ok');
+    rUI();
+}
+
+function rUI() {
+    const u = getUser();
+    currentUser = u;
+    document.getElementById('ub').textContent = u ? '👤 ' + u.name : '👤 Guest (' + getDeviceId().slice(0,8) + ')';
+    document.getElementById('lbi').style.display = u ? 'none' : 'inline-block';
+    document.getElementById('lbo').style.display = u ? 'inline-block' : 'none';
+    const ta = document.getElementById('cd');
+    const sv = document.getElementById('bsv');
+    if (u) {
+        ta.disabled = false;
+        sv.disabled = false;
+        document.querySelectorAll('.tb button').forEach(b => b.disabled = false);
+    } else {
+        ta.disabled = true;
+        sv.disabled = true;
+        document.querySelectorAll('.tb button:not(.cp):not(.dl):not(.sh)').forEach(b => b.disabled = true);
+    }
+    r();
+}
+
+// ============================================================
+// STORAGE
+// ============================================================
+function ld() {
+    try {
+        const d = localStorage.getItem('cb_files');
+        if (d) files = JSON.parse(d);
+    } catch { files = []; }
+    r();
+}
+
+function sd() {
+    localStorage.setItem('cb_files', JSON.stringify(files));
+    r();
+}
+
+// ============================================================
+// ID
+// ============================================================
+function gn() {
+    if (!files.length) return 1;
+    const ids = files.map(f => f.id).sort((a,b) => a-b);
+    let n = 1;
+    for (const id of ids) {
+        if (id === n) n++;
+        else break;
+    }
+    return n;
+}
+
+function ui() {
+    const n = gn();
+    document.getElementById('idn').textContent = n;
+    document.getElementById('nx').textContent = n;
+    const st = document.getElementById('ids');
+    if (!currentUser) {
+        st.textContent = '🔒 Read Only';
+        st.style.color = '#e74c3c';
+    } else if (editingId) {
+        st.textContent = '✏️ #' + editingId;
+        st.style.color = '#fdcb6e';
+    } else {
+        st.textContent = '✅ Free';
+        st.style.color = '#00b894';
+    }
+}
+
+// ============================================================
+// RENDER
+// ============================================================
+function r() {
+    const list = document.getElementById('fl');
+    document.getElementById('t').textContent = files.length;
+    ui();
+    document.getElementById('cc').textContent = document.getElementById('cd').value.length + ' chars';
+    if (!files.length) {
+        list.innerHTML = '<div class="e"><i>📭</i> No files</div>';
+        return;
+    }
+    const s = [...files].sort((a,b) => b.id - a.id);
+    list.innerHTML = s.map(f => `
+        <div class="it" onclick="lf(${f.id})">
+            <div class="ic">${icn(f.name)}</div>
+            <div class="in">
+                <div class="nm">${esc(f.name)}</div>
+                <div class="mt">
+                    <span class="id">#${f.id}</span>
+                    <span>${new Date(f.updated||f.created).toLocaleDateString()}</span>
+                    <span>${(f.content||'').length} chars</span>
+                    <span><a href="/raw/${f.id}/${f.name}" target="_blank" class="rw">🔗 raw</a></span>
+                </div>
+            </div>
+            <div class="ac">
+                <button onclick="event.stopPropagation();lf(${f.id})">✏️</button>
+                <button class="x" onclick="event.stopPropagation();df(${f.id})">🗑️</button>
+            </div>
+        </div>
+    `).join('');
+}
+
+function icn(n) {
+    const e = (n||'').split('.').pop().toLowerCase();
+    const m = { lua:'📜', js:'🟨', py:'🐍', html:'🌐', css:'🎨', json:'📋', txt:'📄', md:'📝', sh:'💻' };
+    return m[e] || '📄';
+}
+
+function esc(t) {
+    const d = document.createElement('div');
+    d.textContent = t;
+    return d.innerHTML;
+}
+
+// ============================================================
+// CRUD
+// ============================================================
+function sv() {
+    if (!currentUser) { t('🔒 Login required!', 'err'); return; }
+    const name = document.getElementById('fn').value.trim() || 'untitled.txt';
+    const content = document.getElementById('cd').value;
+    if (!content.trim()) { t('Content empty!', 'err'); return; }
+    if (editingId) {
+        const idx = files.findIndex(f => f.id === editingId);
+        if (idx !== -1) {
+            files[idx] = { ...files[idx], name, content, updated: Date.now() };
+            t('✅ Updated #' + editingId, 'ok');
+        }
+        editingId = null;
+    } else {
+        const id = gn();
+        files.push({ id, name, content, created: Date.now(), updated: Date.now() });
+        t('✅ Saved #' + id + ': ' + name, 'ok');
+    }
+    sd();
+    document.getElementById('cd').value = '';
+    document.getElementById('fn').value = 'script.lua';
+    r();
+}
+
+function lf(id) {
+    const f = files.find(x => x.id === id);
+    if (!f) return;
+    if (!currentUser) {
+        document.getElementById('fn').value = f.name;
+        document.getElementById('cd').value = f.content;
+        document.getElementById('cd').disabled = true;
+        document.getElementById('bsv').disabled = true;
+        document.getElementById('idn').textContent = f.id;
+        document.getElementById('ids').textContent = '🔒 Read Only';
+        document.getElementById('ids').style.color = '#e74c3c';
+        t('📂 Viewing: ' + f.name + ' (Read Only)', 'inf');
+        return;
+    }
+    editingId = id;
+    document.getElementById('fn').value = f.name;
+    document.getElementById('cd').value = f.content;
+    document.getElementById('cd').disabled = false;
+    document.getElementById('bsv').disabled = false;
+    r();
+    document.getElementById('cd').focus();
+    t('📂 Loaded: ' + f.name, 'inf');
+}
+
+function df(id) {
+    if (!currentUser) { t('🔒 Login required!', 'err'); return; }
+    if (!confirm('Delete #' + id + '?')) return;
+    const f = files.find(x => x.id === id);
+    files = files.filter(x => x.id !== id);
+    sd();
+    if (editingId === id) { editingId = null; r(); }
+    t('🗑️ Deleted: ' + (f?.name || 'file'), 'err');
+}
+
+function da() {
+    if (!currentUser) { t('🔒 Login required!', 'err'); return; }
+    if (!files.length) return;
+    if (!confirm('Delete ALL?')) return;
+    files = [];
+    sd();
+    editingId = null;
+    r();
+    t('🗑️ All deleted', 'err');
+}
+
+function cl() {
+    if (document.getElementById('cd').value && !confirm('Clear editor?')) return;
+    document.getElementById('cd').value = '';
+    document.getElementById('fn').value = 'script.lua';
+    editingId = null;
+    r();
+    t('🧹 Cleared', 'inf');
+}
+
+// ============================================================
+// COPY
+// ============================================================
+function cp() {
+    const c = document.getElementById('cd').value;
+    if (!c) { t('Nothing to copy!', 'err'); return; }
+    navigator.clipboard?.writeText(c).then(() => t('📋 Copied!', 'ok'))
+        .catch(() => {
+            const ta = document.createElement('textarea');
+            ta.value = c;
+            document.body.appendChild(ta);
+            ta.select();
+            document.execCommand('copy');
+            ta.remove();
+            t('📋 Copied!', 'ok');
+        });
+}
+
+// ============================================================
+// DOWNLOAD
+// ============================================================
+function dl() {
+    const c = document.getElementById('cd').value;
+    const n = document.getElementById('fn').value || 'script.txt';
+    if (!c) { t('Nothing to download!', 'err'); return; }
+    const blob = new Blob([c], { type: 'text/plain' });
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = n;
+    a.click();
+    URL.revokeObjectURL(a.href);
+    t('⬇️ Downloaded', 'ok');
+}
+
+// ============================================================
+// SHARE
+// ============================================================
+function sh() {
+    const c = document.getElementById('cd').value;
+    const n = document.getElementById('fn').value || 'script.txt';
+    if (!c) { t('Nothing to share!', 'err'); return; }
+    const data = btoa(encodeURIComponent(JSON.stringify({ name: n, content: c })));
+    const url = window.location.href.split('?')[0] + '?c=' + data;
+    document.getElementById('su').textContent = url;
+    document.getElementById('sm').classList.add('a');
+}
+
+function cs() {
+    const url = document.getElementById('su').textContent;
+    navigator.clipboard?.writeText(url).then(() => t('🔗 Link copied!', 'ok'))
+        .catch(() => {
+            const ta = document.createElement('textarea');
+            ta.value = url;
+            document.body.appendChild(ta);
+            ta.select();
+            document.execCommand('copy');
+            ta.remove();
+            t('🔗 Link copied!', 'ok');
+        });
+}
+
+function csm() {
+    document.getElementById('sm').classList.remove('a');
+}
+
+// ============================================================
+// TOAST
+// ============================================================
+function t(msg, type = 'inf') {
+    const box = document.getElementById('ts');
+    const el = document.createElement('div');
+    el.className = 'toast ' + type;
+    const ic = { ok: '✅', err: '❌', inf: 'ℹ️' };
+    el.innerHTML = ic[type] + ' ' + msg;
+    box.appendChild(el);
+    setTimeout(() => {
+        el.style.opacity = '0';
+        el.style.transform = 'translateX(30px)';
+        el.style.transition = '0.3s';
+        setTimeout(() => el.remove(), 300);
+    }, 2000);
+}
+
+// ============================================================
+// LOAD FROM URL
+// ============================================================
+function lfu() {
+    const p = new URLSearchParams(window.location.search);
+    const d = p.get('c');
+    if (!d) return;
+    try {
+        const raw = JSON.parse(decodeURIComponent(atob(d)));
+        document.getElementById('fn').value = raw.name || 'shared.lua';
+        document.getElementById('cd').value = raw.content || '';
+        t('📂 Loaded from link!', 'ok');
+        window.history.replaceState({}, document.title, window.location.pathname);
+    } catch { t('Invalid link!', 'err'); }
+}
+
+// ============================================================
+// RAW - CHỈ TEXT THUẦN
+// ============================================================
+function hr() {
+    const path = window.location.pathname;
+    const parts = path.split('/').filter(p => p);
+    if (parts.length >= 2 && parts[0] === 'raw') {
+        const id = parseInt(parts[1]);
+        const name = parts.slice(2).join('/') || 'untitled.txt';
+        let content = '';
+        try {
+            const d = localStorage.getItem('cb_files');
+            if (d) {
+                const all = JSON.parse(d);
+                const f = all.find(x => x.id === id);
+                if (f) content = f.content || '';
+                else content = '// File #' + id + ' not found';
+            } else content = '// No data';
+        } catch { content = '// Error'; }
+        document.documentElement.innerHTML = '<pre style="margin:0;padding:24px;background:#0a0a0a;color:#ccc;font-family:monospace;font-size:14px;min-height:100vh;white-space:pre-wrap;word-break:break-all;">' + content + '</pre>';
+        document.title = 'Raw: ' + name;
+    }
+}
+
+// ============================================================
+// KEYBOARD
+// ============================================================
+document.addEventListener('keydown', e => {
+    if ((e.ctrlKey || e.metaKey) && e.key === 's') { e.preventDefault(); sv(); }
+    if (e.key === 'Escape') { clm(); csm(); }
+});
+
+// ============================================================
+// AUTO
+// ============================================================
+document.getElementById('cd').addEventListener('input', () => {
+    document.getElementById('cc').textContent = document.getElementById('cd').value.length + ' chars';
+});
+
+// ============================================================
+// INIT
+// ============================================================
+ld();
+lfu();
+hr();
+rUI();
+loadUsers();
+</script>
+</body>
+</html>
