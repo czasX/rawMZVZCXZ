@@ -1,379 +1,95 @@
 <!DOCTYPE html>
-<html lang="vi">
+<html>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>📋 PasteBin</title>
+    <title>PasteBin</title>
     <style>
         *{margin:0;padding:0;box-sizing:border-box}
-        body{background:#0a0a0f;color:#e0e0e0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;padding:20px;min-height:100vh}
-        .w{max-width:1000px;margin:0 auto}
-        .h{display:flex;justify-content:space-between;align-items:center;padding:16px 24px;background:#14141e;border:1px solid #2a2a3a;border-radius:12px;margin-bottom:20px}
-        .h .l{font-size:24px;font-weight:700}
-        .h .l span{color:#7c5cfc}
-        .h .s{font-size:14px;color:#6a6a7a}
-        .h .s b{color:#eee}
-        .i{display:flex;gap:12px;margin-bottom:12px;flex-wrap:wrap}
-        .i input{flex:1;padding:12px 16px;background:#14141e;border:1px solid #2a2a3a;border-radius:10px;color:#e0e0e0;font-size:14px;outline:none;min-width:120px;font-family:inherit}
-        .i input:focus{border-color:#7c5cfc;box-shadow:0 0 0 3px rgba(124,92,252,0.15)}
-        .i input::placeholder{color:#5a5a6a}
-        textarea{width:100%;min-height:400px;padding:16px;background:#14141e;border:1px solid #2a2a3a;border-radius:10px;color:#e0e0e0;font-family:'JetBrains Mono','Courier New',monospace;font-size:14px;line-height:1.8;resize:vertical;outline:none}
-        textarea:focus{border-color:#7c5cfc;box-shadow:0 0 0 3px rgba(124,92,252,0.1)}
-        textarea::placeholder{color:#5a5a6a}
-        .tb{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0 16px}
-        .tb button{padding:10px 22px;border:none;border-radius:10px;font-weight:600;font-size:13px;cursor:pointer;font-family:inherit;transition:.2s;display:flex;align-items:center;gap:6px}
-        .tb button:active{transform:scale(.96)}
-        .sv{background:#7c5cfc;color:#fff}
-        .sv:hover{background:#6a4ae8;box-shadow:0 4px 20px rgba(124,92,252,0.3)}
-        .cp{background:#2a2a3a;color:#e0e0e0}
-        .cp:hover{background:#3a3a4a}
+        body{background:#0a0a0a;color:#ccc;font-family:monospace;padding:20px}
+        .w{max-width:900px;margin:0 auto}
+        .h{display:flex;justify-content:space-between;padding:12px 16px;background:#111;border:1px solid #222;border-radius:8px;margin-bottom:16px}
+        .h .l{font-size:20px;font-weight:700;color:#fff}
+        .h .l span{color:#6c5ce7}
+        textarea{width:100%;min-height:400px;padding:14px;background:#111;border:1px solid #222;border-radius:8px;color:#e0e0e0;font-family:monospace;font-size:14px;line-height:1.7;resize:vertical;outline:none}
+        textarea:focus{border-color:#6c5ce7}
+        .tb{display:flex;gap:6px;flex-wrap:wrap;margin:10px 0}
+        .tb button{padding:8px 18px;border:none;border-radius:6px;font-weight:600;font-size:13px;cursor:pointer;font-family:monospace}
+        .sv{background:#6c5ce7;color:#fff}
+        .sv:hover{background:#5a4bd1}
+        .cp{background:#2a2a2a;color:#fff}
+        .cp:hover{background:#3a3a3a}
         .dl{background:#00b894;color:#fff}
         .dl:hover{background:#00a381}
-        .cl{background:#e17055;color:#fff}
-        .cl:hover{background:#d63031}
-        .lb{background:#14141e;border:1px solid #2a2a3a;border-radius:10px;padding:12px 16px;margin:12px 0;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px}
-        .lb .url{color:#7c5cfc;word-break:break-all;font-size:14px;flex:1;font-family:monospace}
-        .lb button{padding:6px 16px;border:none;border-radius:8px;background:#2a2a3a;color:#e0e0e0;cursor:pointer;font-family:inherit;font-size:13px;transition:.2s}
-        .lb button:hover{background:#3a3a4a}
-        .c{background:#14141e;border:1px solid #2a2a3a;border-radius:12px;overflow:hidden;margin-top:16px}
-        .ch{padding:12px 20px;border-bottom:1px solid #2a2a3a;font-weight:600;font-size:14px;background:#12121c}
-        .fl{max-height:350px;overflow-y:auto}
-        .fl::-webkit-scrollbar{width:4px}
-        .fl::-webkit-scrollbar-thumb{background:#2a2a3a;border-radius:4px}
-        .it{display:flex;align-items:center;padding:10px 16px;border-bottom:1px solid #1a1a2a;gap:12px}
+        .cl{background:#e74c3c;color:#fff}
+        .cl:hover{background:#c0392b}
+        .lb{background:#111;border:1px solid #222;border-radius:8px;padding:10px 14px;margin:10px 0;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px}
+        .lb .url{color:#6c5ce7;word-break:break-all;font-size:13px;flex:1}
+        .lb button{padding:4px 14px;border:none;border-radius:6px;background:#2a2a2a;color:#fff;cursor:pointer;font-family:monospace}
+        .lb button:hover{background:#3a3a3a}
+        .fl{max-height:300px;overflow-y:auto;margin-top:12px}
+        .it{display:flex;padding:6px 12px;border-bottom:1px solid #1a1a1a;gap:8px;cursor:pointer}
         .it:hover{background:rgba(255,255,255,0.02)}
-        .it .ic{font-size:20px;width:34px;text-align:center}
-        .it .in{flex:1;min-width:0;cursor:pointer}
-        .it .in .nm{font-size:14px;font-weight:500}
-        .it .in .mt{font-size:11px;color:#6a6a7a;display:flex;gap:14px;flex-wrap:wrap}
-        .it .in .mt .id{color:#7c5cfc;font-weight:600}
-        .it .ac{display:flex;gap:4px}
-        .it .ac button{padding:4px 10px;border:none;border-radius:6px;background:transparent;color:#6a6a7a;cursor:pointer;font-size:13px;transition:.2s}
-        .it .ac button:hover{color:#e0e0e0}
-        .it .ac .x:hover{color:#e17055}
-        .e{text-align:center;padding:40px 16px;color:#5a5a6a;font-size:14px}
-        .e i{font-size:40px;opacity:.2;display:block;margin-bottom:10px}
-        .toasts{position:fixed;bottom:24px;right:24px;z-index:9999;display:flex;flex-direction:column;gap:8px}
-        .toast{padding:12px 20px;border-radius:12px;font-size:13px;font-weight:500;background:#14141e;border:1px solid #2a2a3a;animation:slide .25s ease;backdrop-filter:blur(8px);display:flex;align-items:center;gap:8px}
+        .it .id{color:#6c5ce7;min-width:40px}
+        .it .nm{flex:1}
+        .it .x{cursor:pointer;color:#555}
+        .it .x:hover{color:#e74c3c}
+        .e{text-align:center;padding:30px;color:#444}
+        .toasts{position:fixed;bottom:20px;right:20px;z-index:999}
+        .toast{padding:8px 16px;border-radius:6px;font-size:13px;background:#111;border:1px solid #222;margin-top:4px}
         .toast.ok{border-color:#00b894;color:#00b894}
-        .toast.err{border-color:#e17055;color:#e17055}
-        .toast.inf{border-color:#7c5cfc;color:#7c5cfc}
-        @keyframes slide{from{transform:translateX(30px);opacity:0}to{transform:translateX(0);opacity:1}}
-        .m{display:none;position:fixed;inset:0;background:rgba(0,0,0,.7);backdrop-filter:blur(4px);z-index:999;justify-content:center;align-items:center}
-        .m.a{display:flex}
-        .mb{background:#14141e;border:1px solid #2a2a3a;border-radius:16px;padding:28px;max-width:520px;width:95%;max-height:80vh;overflow-y:auto}
-        .mb h3{font-size:18px;margin-bottom:14px;display:flex;align-items:center;gap:10px;color:#eee}
-        .mb h3 i{color:#7c5cfc}
-        .mb .url{background:#0a0a0f;padding:12px 16px;border-radius:10px;font-size:13px;color:#7c5cfc;word-break:break-all;border:1px solid #2a2a3a;margin:8px 0 14px;font-family:monospace}
-        .mb .sa{display:flex;gap:8px;justify-content:flex-end}
-        .mb .sa button{padding:8px 20px;border:none;border-radius:10px;font-weight:600;cursor:pointer;font-size:13px;font-family:inherit;transition:.2s}
-        .mb .sa .co{background:#7c5cfc;color:#fff}
-        .mb .sa .co:hover{background:#6a4ae8}
-        .mb .sa .cl{background:#2a2a3a;color:#e0e0e0}
-        .mb .sa .cl:hover{background:#3a3a4a}
-        .mb .rp{background:#0a0a0f;padding:14px;border-radius:10px;font-family:'JetBrains Mono',monospace;font-size:13px;white-space:pre-wrap;word-break:break-all;max-height:350px;overflow:auto;border:1px solid #2a2a3a;color:#e0e0e0}
-        .mb .rp:empty::before{content:'(empty)';color:#5a5a6a}
-        .badge{display:inline-block;padding:2px 10px;border-radius:12px;font-size:11px;font-weight:600;background:#2a2a3a;color:#6a6a7a}
-        .badge.lua{background:#2a1a3a;color:#a78bfa}
-        .badge.js{background:#1a2a1a;color:#fbbf24}
-        .badge.py{background:#1a2a3a;color:#60a5fa}
-        .badge.html{background:#2a1a1a;color:#f87171}
-        @media(max-width:600px){body{padding:12px}.h{padding:12px 16px}.h .l{font-size:18px}.i input{padding:10px 14px;font-size:13px}.tb button{padding:8px 14px;font-size:12px}.mb{padding:20px}}
+        .toast.err{border-color:#e74c3c;color:#e74c3c}
+        .toast.inf{border-color:#6c5ce7;color:#6c5ce7}
     </style>
 </head>
 <body>
 <div class="w">
 
 <div class="h">
-    <div class="l">📋 <span>PasteBin</span></div>
-    <div class="s">📄 <b id="t">0</b> pastes</div>
+    <div class="l">📋 <span>Paste</span></div>
+    <div style="color:#555"><b id="t">0</b></div>
 </div>
 
-<div class="i">
-    <input type="text" id="fn" placeholder="Tên paste (tùy chọn)">
-    <input type="text" id="lang" placeholder="Ngôn ngữ (lua, js, py...)" style="flex:0.5;min-width:100px">
-</div>
-
-<textarea id="cd" placeholder="Dán code vào đây..."></textarea>
+<textarea id="cd" placeholder="Dán code..."></textarea>
 
 <div class="tb">
-    <button class="sv" onclick="sv()"><span>➕</span> Tạo Paste</button>
-    <button class="cp" onclick="cp()"><span>📋</span> Copy</button>
-    <button class="dl" onclick="dl()"><span>⬇️</span> Download</button>
-    <button class="cl" onclick="cl()"><span>🗑️</span> Clear</button>
+    <button class="sv" onclick="sv()">💾 Paste</button>
+    <button class="cp" onclick="cp()">📋 Copy</button>
+    <button class="dl" onclick="dl()">⬇️ DL</button>
+    <button class="cl" onclick="cl()">🗑️</button>
 </div>
 
 <div id="linkArea" style="display:none">
     <div class="lb">
-        <span class="url" id="shareUrl">Loading...</span>
-        <div style="display:flex;gap:8px">
-            <button onclick="cs()">📋 Copy</button>
-            <button onclick="document.getElementById('linkArea').style.display='none'">✖</button>
-        </div>
+        <span class="url" id="shareUrl">...</span>
+        <button onclick="cs()">Copy</button>
+        <button onclick="document.getElementById('linkArea').style.display='none'">✖</button>
     </div>
 </div>
 
-<div class="c">
-    <div class="ch">📋 Danh sách paste</div>
-    <div class="fl" id="fl"><div class="e"><span style="font-size:40px;display:block;opacity:.2;margin-bottom:10px">📭</span>Chưa có paste nào</div></div>
-</div>
+<div class="fl" id="fl"><div class="e">📭 Empty</div></div>
 
 </div>
-
-<div class="m" id="sm"><div class="mb"><h3><i>🔗</i> Share Link</h3><div class="url" id="su">...</div><div class="sa"><button class="co" onclick="cs()">📋 Copy</button><button class="cl" onclick="csm()">Close</button></div></div></div>
-
-<div class="m" id="rm"><div class="mb"><h3><i>📄</i> Raw Content</h3><div class="rp" id="rawContent"></div><div class="sa" style="margin-top:14px"><button class="cl" onclick="document.getElementById('rm').classList.remove('a')">Close</button></div></div></div>
-
 <div class="toasts" id="ts"></div>
 
 <script>
-// ============================================================
-// DATA
-// ============================================================
-let pastes = [];
-let editId = null;
-
-// ============================================================
-// STORAGE
-// ============================================================
-function ld() {
-    try { const d = localStorage.getItem('pbin'); if (d) pastes = JSON.parse(d); } catch { pastes = []; }
-    r();
-}
-function sd() { localStorage.setItem('pbin', JSON.stringify(pastes)); r(); }
-
-// ============================================================
-// ID - TỰ TĂNG 1 → ∞
-// ============================================================
-function gn() {
-    if (!pastes.length) return 1;
-    const ids = pastes.map(f => f.id).sort((a,b) => a-b);
-    let n = 1;
-    for (const id of ids) { if (id === n) n++; else break; }
-    return n;
-}
-
-// ============================================================
-// RENDER
-// ============================================================
-function r() {
-    const list = document.getElementById('fl');
-    document.getElementById('t').textContent = pastes.length;
-    if (!pastes.length) { list.innerHTML = '<div class="e"><span style="font-size:40px;display:block;opacity:.2;margin-bottom:10px">📭</span>Chưa có paste nào</div>'; return; }
-    const s = [...pastes].sort((a,b) => b.id - a.id);
-    list.innerHTML = s.map(f => `
-        <div class="it">
-            <div class="ic">${icn(f.lang || f.name || '')}</div>
-            <div class="in" onclick="lf(${f.id})">
-                <div class="nm">${esc(f.name || 'untitled')} <span class="badge ${f.lang||'text'}">${esc(f.lang||'text')}</span></div>
-                <div class="mt">
-                    <span class="id">#${f.id}</span>
-                    <span>${new Date(f.updated||f.created).toLocaleString()}</span>
-                    <span>${(f.content||'').length} chars</span>
-                </div>
-            </div>
-            <div class="ac">
-                <button onclick="event.stopPropagation();viewRaw(${f.id})" title="Raw">📄</button>
-                <button onclick="event.stopPropagation();lf(${f.id})" title="Edit">✏️</button>
-                <button class="x" onclick="event.stopPropagation();df(${f.id})" title="Delete">🗑️</button>
-            </div>
-        </div>
-    `).join('');
-}
-
-function icn(n) {
-    const e = (n||'').toLowerCase();
-    const m = { lua:'📜', js:'🟨', py:'🐍', html:'🌐', css:'🎨', json:'📋', txt:'📄', md:'📝', sh:'💻', go:'🐹', rs:'🦀', php:'🐘', java:'☕', cpp:'⚙️', c:'⚙️', rb:'💎', swift:'🐦', kt:'🟣', ts:'🔵', vue:'🟢', react:'⚛️' };
-    return m[e] || '📄';
-}
-
-function esc(t) { const d = document.createElement('div'); d.textContent = t; return d.innerHTML; }
-
-// ============================================================
-// CRUD
-// ============================================================
-function sv() {
-    const content = document.getElementById('cd').value;
-    if (!content.trim()) { t('Nội dung trống!', 'err'); return; }
-    const name = document.getElementById('fn').value.trim() || 'untitled';
-    const lang = document.getElementById('lang').value.trim() || 'text';
-    
-    if (editId) {
-        const idx = pastes.findIndex(f => f.id === editId);
-        if (idx !== -1) {
-            pastes[idx] = { ...pastes[idx], name, lang, content, updated: Date.now() };
-            t('✅ Updated #' + editId, 'ok');
-        }
-        editId = null;
-    } else {
-        const id = gn();
-        pastes.push({ id, name, lang, content, created: Date.now(), updated: Date.now() });
-        t('✅ Created #' + id, 'ok');
-    }
-    
-    sd();
-    const url = window.location.href.split('?')[0] + '?p=' + pastes[pastes.length-1].id;
-    document.getElementById('shareUrl').textContent = url;
-    document.getElementById('linkArea').style.display = 'block';
-    document.getElementById('cd').value = '';
-    document.getElementById('fn').value = '';
-    document.getElementById('lang').value = '';
-    r();
-}
-
-function lf(id) {
-    const f = pastes.find(x => x.id === id);
-    if (!f) return;
-    editId = id;
-    document.getElementById('fn').value = f.name || '';
-    document.getElementById('lang').value = f.lang || '';
-    document.getElementById('cd').value = f.content;
-    document.getElementById('cd').focus();
-    document.getElementById('linkArea').style.display = 'none';
-    t('📂 Loaded: ' + (f.name || '#' + f.id), 'inf');
-}
-
-function viewRaw(id) {
-    const f = pastes.find(x => x.id === id);
-    if (!f) return;
-    document.getElementById('rawContent').textContent = f.content || '';
-    document.getElementById('rm').classList.add('a');
-}
-
-function df(id) {
-    if (!confirm('Delete #' + id + '?')) return;
-    const f = pastes.find(x => x.id === id);
-    pastes = pastes.filter(x => x.id !== id);
-    sd();
-    if (editId === id) { editId = null; document.getElementById('linkArea').style.display = 'none'; }
-    t('🗑️ Deleted: ' + (f?.name || '#' + id), 'err');
-}
-
-function cl() {
-    if (document.getElementById('cd').value && !confirm('Clear editor?')) return;
-    document.getElementById('cd').value = '';
-    document.getElementById('fn').value = '';
-    document.getElementById('lang').value = '';
-    editId = null;
-    document.getElementById('linkArea').style.display = 'none';
-    t('🧹 Cleared', 'inf');
-}
-
-// ============================================================
-// COPY
-// ============================================================
-function cp() {
-    const c = document.getElementById('cd').value;
-    if (!c) { t('Nothing to copy!', 'err'); return; }
-    navigator.clipboard?.writeText(c).then(() => t('📋 Copied!', 'ok'))
-        .catch(() => {
-            const ta = document.createElement('textarea');
-            ta.value = c;
-            document.body.appendChild(ta);
-            ta.select();
-            document.execCommand('copy');
-            ta.remove();
-            t('📋 Copied!', 'ok');
-        });
-}
-
-// ============================================================
-// DOWNLOAD
-// ============================================================
-function dl() {
-    const c = document.getElementById('cd').value;
-    const n = document.getElementById('fn').value || 'paste.txt';
-    if (!c) { t('Nothing to download!', 'err'); return; }
-    const blob = new Blob([c], { type: 'text/plain' });
-    const a = document.createElement('a');
-    a.href = URL.createObjectURL(blob);
-    a.download = n;
-    a.click();
-    URL.revokeObjectURL(a.href);
-    t('⬇️ Downloaded', 'ok');
-}
-
-// ============================================================
-// SHARE
-// ============================================================
-function cs() {
-    const url = document.getElementById('shareUrl').textContent || document.getElementById('su').textContent;
-    if (!url || url === 'Loading...') { t('No link to copy!', 'err'); return; }
-    navigator.clipboard?.writeText(url).then(() => t('🔗 Link copied!', 'ok'))
-        .catch(() => {
-            const ta = document.createElement('textarea');
-            ta.value = url;
-            document.body.appendChild(ta);
-            ta.select();
-            document.execCommand('copy');
-            ta.remove();
-            t('🔗 Link copied!', 'ok');
-        });
-}
-
-function csm() { document.getElementById('sm').classList.remove('a'); }
-
-// ============================================================
-// TOAST
-// ============================================================
-function t(msg, type = 'inf') {
-    const box = document.getElementById('ts');
-    const el = document.createElement('div');
-    el.className = 'toast ' + type;
-    const ic = { ok: '✅', err: '❌', inf: 'ℹ️' };
-    el.innerHTML = ic[type] + ' ' + msg;
-    box.appendChild(el);
-    setTimeout(() => {
-        el.style.opacity = '0';
-        el.style.transform = 'translateX(30px)';
-        el.style.transition = '0.3s';
-        setTimeout(() => el.remove(), 300);
-    }, 2200);
-}
-
-// ============================================================
-// LOAD FROM URL
-// ============================================================
-function lfu() {
-    const p = new URLSearchParams(window.location.search);
-    const id = p.get('p');
-    if (id) {
-        const f = pastes.find(x => x.id === parseInt(id));
-        if (f) {
-            document.getElementById('fn').value = f.name || '';
-            document.getElementById('lang').value = f.lang || '';
-            document.getElementById('cd').value = f.content;
-            document.getElementById('linkArea').style.display = 'none';
-            t('📂 Loaded paste #' + f.id, 'ok');
-            window.history.replaceState({}, document.title, window.location.pathname);
-            return;
-        }
-    }
-    const s = p.get('s');
-    if (s) {
-        try {
-            const raw = JSON.parse(decodeURIComponent(atob(s)));
-            document.getElementById('fn').value = raw.name || '';
-            document.getElementById('cd').value = raw.content || '';
-            t('📂 Loaded shared paste!', 'ok');
-            window.history.replaceState({}, document.title, window.location.pathname);
-        } catch { t('Invalid link!', 'err'); }
-    }
-}
-
-// ============================================================
-// KEYBOARD
-// ============================================================
-document.addEventListener('keydown', e => {
-    if ((e.ctrlKey || e.metaKey) && e.key === 's') { e.preventDefault(); sv(); }
-    if (e.key === 'Escape') { csm(); document.getElementById('rm').classList.remove('a'); }
-});
-
-// ============================================================
-// INIT
-// ============================================================
-ld();
-lfu();
+let pastes=[],editId=null;
+function ld(){try{const d=localStorage.getItem('p');if(d)pastes=JSON.parse(d)}catch{}r()}
+function sd(){localStorage.setItem('p',JSON.stringify(pastes));r()}
+function gn(){if(!pastes.length)return 1;const ids=pastes.map(f=>f.id).sort((a,b)=>a-b);let n=1;for(const id of ids){if(id===n)n++;else break}return n}
+function r(){const list=document.getElementById('fl');document.getElementById('t').textContent=pastes.length;if(!pastes.length){list.innerHTML='<div class="e">📭 Empty</div>';return}const s=[...pastes].sort((a,b)=>b.id-a.id);list.innerHTML=s.map(f=>`<div class="it" onclick="lf(${f.id})"><span class="id">#${f.id}</span><span class="nm">${esc(f.name||'untitled')}</span><span style="color:#555;font-size:12px">${(f.content||'').length}c</span><span class="x" onclick="event.stopPropagation();df(${f.id})">🗑️</span></div>`).join('')}
+function esc(t){const d=document.createElement('div');d.textContent=t;return d.innerHTML}
+function sv(){const c=document.getElementById('cd').value;if(!c.trim()){t('Empty!','err');return}const n=document.getElementById('fn')?.value?.trim()||'untitled';if(editId){const idx=pastes.findIndex(f=>f.id===editId);if(idx!==-1){pastes[idx]={...pastes[idx],name:n,content:c,updated:Date.now()};t('Updated #'+editId,'ok')}editId=null}else{const id=gn();pastes.push({id,name:n,content:c,created:Date.now(),updated:Date.now()});t('Created #'+id,'ok')}sd();const url=window.location.href.split('?')[0]+'?p='+pastes[pastes.length-1].id;document.getElementById('shareUrl').textContent=url;document.getElementById('linkArea').style.display='block';document.getElementById('cd').value='';r()}
+function lf(id){const f=pastes.find(x=>x.id===id);if(!f)return;editId=id;document.getElementById('cd').value=f.content;document.getElementById('linkArea').style.display='none';t('Loaded #'+id,'inf')}
+function df(id){if(!confirm('Delete #'+id+'?'))return;pastes=pastes.filter(x=>x.id!==id);sd();if(editId===id){editId=null;document.getElementById('linkArea').style.display='none'}t('Deleted','err')}
+function cl(){if(document.getElementById('cd').value&&!confirm('Clear?'))return;document.getElementById('cd').value='';editId=null;document.getElementById('linkArea').style.display='none';t('Cleared','inf')}
+function cp(){const c=document.getElementById('cd').value;if(!c){t('Empty!','err');return}navigator.clipboard?.writeText(c).then(()=>t('Copied!','ok')).catch(()=>{const ta=document.createElement('textarea');ta.value=c;document.body.appendChild(ta);ta.select();document.execCommand('copy');ta.remove();t('Copied!','ok')})}
+function dl(){const c=document.getElementById('cd').value;if(!c){t('Empty!','err');return}const blob=new Blob([c],{type:'text/plain'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='paste.txt';a.click();URL.revokeObjectURL(a.href);t('Downloaded','ok')}
+function cs(){const url=document.getElementById('shareUrl').textContent;if(!url||url==='...'){t('No link!','err');return}navigator.clipboard?.writeText(url).then(()=>t('Link copied!','ok')).catch(()=>{const ta=document.createElement('textarea');ta.value=url;document.body.appendChild(ta);ta.select();document.execCommand('copy');ta.remove();t('Link copied!','ok')})}
+function t(msg,type='inf'){const box=document.getElementById('ts');const el=document.createElement('div');el.className='toast '+type;const ic={ok:'✅',err:'❌',inf:'ℹ️'};el.innerHTML=ic[type]+' '+msg;box.appendChild(el);setTimeout(()=>{el.style.opacity='0';el.style.transform='translateX(30px)';el.style.transition='0.3s';setTimeout(()=>el.remove(),300)},2000)}
+function lfu(){const p=new URLSearchParams(window.location.search);const id=p.get('p');if(id){const f=pastes.find(x=>x.id===parseInt(id));if(f){document.getElementById('cd').value=f.content;t('Loaded #'+f.id,'ok');window.history.replaceState({},document.title,window.location.pathname)}}}
+document.addEventListener('keydown',e=>{if((e.ctrlKey||e.metaKey)&&e.key==='s'){e.preventDefault();sv()}if(e.key==='Escape'){document.getElementById('linkArea').style.display='none'}});
+ld();lfu();
 </script>
 </body>
-                                          </html>
+    </html>
