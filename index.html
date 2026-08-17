@@ -1,0 +1,963 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>📝 CodeBin Pro</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Courier New', monospace;
+            background: #0a0a0f;
+            color: #e4e4e7;
+            padding: 16px;
+            min-height: 100vh;
+        }
+        .container { max-width: 1100px; margin: 0 auto; }
+        
+        /* HEADER */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 20px;
+            background: #14141e;
+            border: 1px solid #2a2a3a;
+            border-radius: 12px;
+            margin-bottom: 16px;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        .header .logo { font-size: 20px; font-weight: 700; display: flex; align-items: center; gap: 8px; }
+        .header .logo i { color: #6c5ce7; }
+        .header .stats { font-size: 13px; color: #8a8a9a; display: flex; gap: 16px; flex-wrap: wrap; }
+        .header .stats span { display: flex; align-items: center; gap: 4px; }
+        .header .stats .num { color: #e4e4e7; font-weight: 600; }
+        .header .user-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 13px;
+        }
+        .header .user-info .avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: #6c5ce7;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 14px;
+        }
+        .btn-login {
+            padding: 6px 16px;
+            border: none;
+            border-radius: 8px;
+            background: #6c5ce7;
+            color: #fff;
+            cursor: pointer;
+            font-weight: 600;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+        }
+        .btn-login:hover { background: #5a4bd1; }
+        .btn-logout {
+            padding: 6px 16px;
+            border: none;
+            border-radius: 8px;
+            background: #e17055;
+            color: #fff;
+            cursor: pointer;
+            font-weight: 600;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+        }
+        .btn-logout:hover { background: #d63031; }
+        
+        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+        @media (max-width: 800px) { .grid { grid-template-columns: 1fr; } }
+        
+        .card {
+            background: #14141e;
+            border: 1px solid #2a2a3a;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+        .card-header {
+            padding: 12px 16px;
+            border-bottom: 1px solid #2a2a3a;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 13px;
+            font-weight: 600;
+            background: rgba(255,255,255,0.02);
+        }
+        .card-header i { color: #6c5ce7; margin-right: 6px; }
+        .card-body { padding: 14px; }
+        
+        .row {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+        @media (max-width: 500px) { .row { grid-template-columns: 1fr; } }
+        
+        .form-group label {
+            display: block;
+            font-size: 11px;
+            font-weight: 600;
+            color: #8a8a9a;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 4px;
+        }
+        .form-group input {
+            width: 100%;
+            padding: 10px 14px;
+            background: #0a0a0f;
+            border: 1px solid #2a2a3a;
+            border-radius: 8px;
+            color: #e4e4e7;
+            font-size: 13px;
+            font-family: 'Courier New', monospace;
+            transition: 0.3s;
+        }
+        .form-group input:focus {
+            outline: none;
+            border-color: #6c5ce7;
+            box-shadow: 0 0 0 2px rgba(108,92,231,0.15);
+        }
+        
+        .id-box {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 14px;
+            background: #0a0a0f;
+            border: 1px solid #2a2a3a;
+            border-radius: 8px;
+            height: 42px;
+        }
+        .id-box .num {
+            font-size: 22px;
+            font-weight: 700;
+            color: #6c5ce7;
+            font-family: 'Courier New', monospace;
+        }
+        .id-box .status {
+            font-size: 11px;
+            padding: 2px 10px;
+            border-radius: 12px;
+            margin-left: auto;
+            background: rgba(0,184,148,0.15);
+            color: #00b894;
+        }
+        .id-box .status.editing {
+            background: rgba(253,203,110,0.15);
+            color: #fdcb6e;
+        }
+        .id-box .status.locked {
+            background: rgba(225,112,85,0.15);
+            color: #e17055;
+        }
+        
+        textarea {
+            width: 100%;
+            min-height: 320px;
+            padding: 12px;
+            background: #0a0a0f;
+            border: 1px solid #2a2a3a;
+            border-radius: 8px;
+            color: #e4e4e7;
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+            line-height: 1.6;
+            resize: vertical;
+            transition: 0.3s;
+        }
+        textarea:focus {
+            outline: none;
+            border-color: #6c5ce7;
+            box-shadow: 0 0 0 2px rgba(108,92,231,0.1);
+        }
+        textarea:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        textarea::placeholder { color: #5a5a6a; }
+        
+        .toolbar {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+            margin-top: 10px;
+        }
+        .toolbar button {
+            padding: 8px 14px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 12px;
+            cursor: pointer;
+            transition: 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-family: 'Courier New', monospace;
+        }
+        .toolbar button:active { transform: scale(0.95); }
+        .toolbar button:disabled { opacity: 0.4; cursor: not-allowed; }
+        .btn-save { background: #6c5ce7; color: #fff; }
+        .btn-save:hover:not(:disabled) { background: #5a4bd1; }
+        .btn-copy { background: #2a2a3a; color: #e4e4e7; }
+        .btn-copy:hover:not(:disabled) { background: #3a3a4a; }
+        .btn-dl { background: #00b894; color: #fff; }
+        .btn-dl:hover:not(:disabled) { background: #00a381; }
+        .btn-del { background: #e17055; color: #fff; }
+        .btn-del:hover:not(:disabled) { background: #d63031; }
+        .btn-share { background: #a29bfe; color: #0a0a0f; }
+        .btn-share:hover:not(:disabled) { background: #8c85e0; }
+        
+        .file-list {
+            max-height: 350px;
+            overflow-y: auto;
+        }
+        .file-list::-webkit-scrollbar { width: 3px; }
+        .file-list::-webkit-scrollbar-thumb { background: #2a2a3a; border-radius: 4px; }
+        
+        .file-item {
+            display: flex;
+            align-items: center;
+            padding: 8px 12px;
+            border-bottom: 1px solid #1a1a2a;
+            gap: 10px;
+            cursor: pointer;
+            transition: 0.15s;
+        }
+        .file-item:hover { background: rgba(255,255,255,0.03); }
+        .file-item .icon { font-size: 18px; width: 30px; text-align: center; }
+        .file-item .info { flex: 1; min-width: 0; }
+        .file-item .info .name {
+            font-size: 13px;
+            font-weight: 500;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .file-item .info .meta {
+            font-size: 10px;
+            color: #6a6a7a;
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .file-item .info .meta .id-badge {
+            padding: 0 6px;
+            background: rgba(108,92,231,0.15);
+            border-radius: 3px;
+            color: #6c5ce7;
+            font-weight: 600;
+        }
+        .file-item .info .meta .raw-link {
+            color: #00b894;
+            text-decoration: none;
+        }
+        .file-item .info .meta .raw-link:hover { text-decoration: underline; }
+        .file-item .actions {
+            display: flex;
+            gap: 4px;
+        }
+        .file-item .actions button {
+            padding: 2px 8px;
+            border: none;
+            border-radius: 4px;
+            background: transparent;
+            color: #6a6a7a;
+            cursor: pointer;
+            font-size: 12px;
+            transition: 0.2s;
+        }
+        .file-item .actions button:hover { color: #e4e4e7; }
+        .file-item .actions .del:hover { color: #e17055; }
+        
+        .empty {
+            text-align: center;
+            padding: 30px 16px;
+            color: #5a5a6a;
+            font-size: 13px;
+        }
+        .empty i { font-size: 32px; opacity: 0.2; display: block; margin-bottom: 8px; }
+        
+        /* TOAST */
+        .toast-box {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 999;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+        .toast {
+            padding: 10px 18px;
+            border-radius: 10px;
+            font-size: 13px;
+            font-weight: 500;
+            background: #14141e;
+            border: 1px solid #2a2a3a;
+            animation: slideIn 0.25s ease;
+            backdrop-filter: blur(8px);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .toast.ok { border-color: #00b894; color: #00b894; }
+        .toast.err { border-color: #e17055; color: #e17055; }
+        .toast.info { border-color: #6c5ce7; color: #6c5ce7; }
+        @keyframes slideIn {
+            from { transform: translateX(40px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        
+        /* MODAL LOGIN */
+        .modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.7);
+            backdrop-filter: blur(6px);
+            z-index: 99;
+            justify-content: center;
+            align-items: center;
+        }
+        .modal.active { display: flex; }
+        .modal-box {
+            background: #14141e;
+            border: 1px solid #2a2a3a;
+            border-radius: 16px;
+            padding: 28px;
+            max-width: 400px;
+            width: 95%;
+        }
+        .modal-box h3 {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 16px;
+            font-size: 20px;
+        }
+        .modal-box h3 i { color: #6c5ce7; }
+        .modal-box .form-group { margin-bottom: 12px; }
+        .modal-box .form-group input {
+            width: 100%;
+            padding: 12px 14px;
+            background: #0a0a0f;
+            border: 1px solid #2a2a3a;
+            border-radius: 8px;
+            color: #e4e4e7;
+            font-size: 14px;
+            font-family: 'Courier New', monospace;
+        }
+        .modal-box .form-group input:focus {
+            outline: none;
+            border-color: #6c5ce7;
+        }
+        .modal-box .actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 16px;
+        }
+        .modal-box .actions button {
+            flex: 1;
+            padding: 10px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 14px;
+            font-family: 'Courier New', monospace;
+        }
+        .modal-box .actions .btn-login-submit {
+            background: #6c5ce7;
+            color: #fff;
+        }
+        .modal-box .actions .btn-login-submit:hover { background: #5a4bd1; }
+        .modal-box .actions .btn-close-modal {
+            background: #2a2a3a;
+            color: #e4e4e7;
+        }
+        .modal-box .actions .btn-close-modal:hover { background: #3a3a4a; }
+        .modal-box .error-msg {
+            color: #e17055;
+            font-size: 13px;
+            margin-top: 8px;
+            display: none;
+        }
+        .modal-box .error-msg.show { display: block; }
+        
+        /* SHARE MODAL */
+        .modal-box .url {
+            background: #0a0a0f;
+            padding: 10px 14px;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            color: #6c5ce7;
+            word-break: break-all;
+            border: 1px solid #2a2a3a;
+            margin: 8px 0 12px 0;
+        }
+        .modal-box .modal-actions {
+            display: flex;
+            gap: 8px;
+            justify-content: flex-end;
+        }
+        .modal-box .modal-actions button {
+            padding: 8px 18px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 13px;
+            font-family: 'Courier New', monospace;
+        }
+        .modal-box .close-btn { background: #2a2a3a; color: #e4e4e7; }
+        .modal-box .close-btn:hover { background: #3a3a4a; }
+        .modal-box .copy-btn { background: #6c5ce7; color: #fff; }
+        .modal-box .copy-btn:hover { background: #5a4bd1; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header class="header">
+        <div class="logo"><i class="fas fa-code"></i> CodeBin</div>
+        <div class="stats">
+            <span><i class="fas fa-file"></i> <span class="num" id="totalFiles">0</span></span>
+            <span><i class="fas fa-hashtag"></i> Next: <span class="num" id="nextId">1</span></span>
+        </div>
+        <div class="user-info" id="userInfo">
+            <span id="userNameDisplay" style="color:#8a8a9a;font-size:13px;">👤 Guest</span>
+            <button class="btn-login" onclick="openLogin()" id="loginBtn">🔑 Login</button>
+            <button class="btn-logout" onclick="logout()" id="logoutBtn" style="display:none;">🚪 Logout</button>
+        </div>
+    </header>
+
+    <div class="grid">
+        <div class="card">
+            <div class="card-header">
+                <i class="fas fa-pen"></i> Editor
+                <span style="font-weight:400;color:#6a6a7a;font-size:11px;" id="charCount">0 chars</span>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="form-group">
+                        <label>📁 Tên file</label>
+                        <input type="text" id="fileName" value="script.lua" placeholder="ten_file.lua">
+                    </div>
+                    <div class="form-group">
+                        <label>🔢 ID</label>
+                        <div class="id-box">
+                            <span class="num" id="idDisplay">1</span>
+                            <span class="status" id="idStatus">✅ Free</span>
+                        </div>
+                    </div>
+                </div>
+                <textarea id="codeContent" placeholder="Paste code here...&#10;.lua .js .py .html .css .json .txt"></textarea>
+                <div class="toolbar">
+                    <button class="btn-save" onclick="save()" id="btnSave"><i class="fas fa-save"></i> Lưu</button>
+                    <button class="btn-copy" onclick="copyCode()"><i class="fas fa-copy"></i> Copy</button>
+                    <button class="btn-dl" onclick="download()"><i class="fas fa-download"></i> Tải</button>
+                    <button class="btn-share" onclick="share()"><i class="fas fa-share-alt"></i> Share</button>
+                    <button class="btn-del" onclick="clearEditor()"><i class="fas fa-trash"></i></button>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <i class="fas fa-list"></i> Danh sách
+                <button onclick="deleteAll()" style="background:transparent;border:none;color:#e17055;cursor:pointer;font-size:12px;">
+                    <i class="fas fa-trash-alt"></i> Xóa all
+                </button>
+            </div>
+            <div class="card-body" style="padding:0;">
+                <div class="file-list" id="fileList">
+                    <div class="empty"><i class="fas fa-inbox"></i> Chưa có file nào</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- LOGIN MODAL -->
+<div class="modal" id="loginModal">
+    <div class="modal-box">
+        <h3><i class="fas fa-lock"></i> Đăng nhập</h3>
+        <div class="form-group">
+            <input type="email" id="loginEmail" placeholder="Email" value="admin@codebin.com">
+        </div>
+        <div class="form-group">
+            <input type="password" id="loginPassword" placeholder="Mật khẩu" value="123456">
+        </div>
+        <div class="error-msg" id="loginError">❌ Sai email hoặc mật khẩu!</div>
+        <div class="actions">
+            <button class="btn-close-modal" onclick="closeLogin()">Đóng</button>
+            <button class="btn-login-submit" onclick="doLogin()">🔑 Đăng nhập</button>
+        </div>
+    </div>
+</div>
+
+<!-- SHARE MODAL -->
+<div class="modal" id="shareModal">
+    <div class="modal-box">
+        <h3><i class="fas fa-link" style="color:#6c5ce7;"></i> Chia sẻ link</h3>
+        <div class="url" id="shareUrl">Đang tạo...</div>
+        <div class="modal-actions">
+            <button class="copy-btn" onclick="copyShare()"><i class="fas fa-copy"></i> Copy link</button>
+            <button class="close-btn" onclick="closeShare()">Đóng</button>
+        </div>
+    </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast-box" id="toastBox"></div>
+
+<script>
+// ===================== DATA =====================
+let files = [];
+let editingId = null;
+let currentUser = null;
+
+// ===================== AUTH =====================
+// Mặc định: 1 tài khoản admin
+const USERS = {
+    'admin@codebin.com': {
+        password: '123456',
+        name: 'Admin'
+    }
+};
+
+function getDeviceId() {
+    let id = localStorage.getItem('device_id');
+    if (!id) {
+        id = 'device_' + Date.now() + '_' + Math.random().toString(36).substr(2, 6);
+        localStorage.setItem('device_id', id);
+    }
+    return id;
+}
+
+function getUser() {
+    const data = localStorage.getItem('codebin_user');
+    if (data) {
+        try {
+            return JSON.parse(data);
+        } catch(e) {}
+    }
+    return null;
+}
+
+function saveUser(user) {
+    localStorage.setItem('codebin_user', JSON.stringify(user));
+    currentUser = user;
+    updateUI();
+}
+
+function logout() {
+    if (!confirm('Đăng xuất?')) return;
+    localStorage.removeItem('codebin_user');
+    currentUser = null;
+    updateUI();
+    toast('👋 Đã đăng xuất', 'info');
+    // Reset editor
+    document.getElementById('codeContent').disabled = false;
+    document.getElementById('btnSave').disabled = false;
+}
+
+function openLogin() {
+    document.getElementById('loginModal').classList.add('active');
+    document.getElementById('loginError').classList.remove('show');
+    document.getElementById('loginEmail').focus();
+}
+
+function closeLogin() {
+    document.getElementById('loginModal').classList.remove('active');
+}
+
+function doLogin() {
+    const email = document.getElementById('loginEmail').value.trim();
+    const password = document.getElementById('loginPassword').value.trim();
+    
+    if (!email || !password) {
+        document.getElementById('loginError').textContent = '❌ Vui lòng nhập email và mật khẩu!';
+        document.getElementById('loginError').classList.add('show');
+        return;
+    }
+
+    const user = USERS[email];
+    if (!user || user.password !== password) {
+        document.getElementById('loginError').textContent = '❌ Sai email hoặc mật khẩu!';
+        document.getElementById('loginError').classList.add('show');
+        return;
+    }
+    
+    // Login success
+    const userData = {
+        email: email,
+        name: user.name || email.split('@')[0]
+    };
+    saveUser(userData);
+    closeLogin();
+    toast('✅ Đăng nhập thành công!', 'ok');
+    updateUI();
+}
+
+function updateUI() {
+    const user = getUser();
+    currentUser = user;
+    const nameDisplay = document.getElementById('userNameDisplay');
+    const loginBtn = document.getElementById('loginBtn');
+    const logoutBtn = document.getElementById('logoutBtn');
+    const textarea = document.getElementById('codeContent');
+    const saveBtn = document.getElementById('btnSave');
+    
+    if (user) {
+        nameDisplay.textContent = '👤 ' + user.name;
+        loginBtn.style.display = 'none';
+        logoutBtn.style.display = 'inline-block';
+        textarea.disabled = false;
+        saveBtn.disabled = false;
+        document.querySelectorAll('.toolbar button').forEach(b => b.disabled = false);
+    } else {
+        nameDisplay.textContent = '👤 Guest (📱 ' + getDeviceId().slice(0,8) + ')';
+        loginBtn.style.display = 'inline-block';
+        logoutBtn.style.display = 'none';
+        textarea.disabled = true;
+        saveBtn.disabled = true;
+        document.querySelectorAll('.toolbar button:not(.btn-copy):not(.btn-dl):not(.btn-share)').forEach(b => {
+            b.disabled = true;
+        });
+    }
+    render();
+}
+
+// ===================== LOAD / SAVE =====================
+function loadData() {
+    try {
+        const raw = localStorage.getItem('codebin_files');
+        if (raw) files = JSON.parse(raw);
+    } catch (e) { files = []; }
+    render();
+}
+
+function saveData() {
+    localStorage.setItem('codebin_files', JSON.stringify(files));
+    render();
+}
+
+// ===================== ID =====================
+function getNextId() {
+    if (!files.length) return 1;
+    const ids = files.map(f => f.id).sort((a,b) => a-b);
+    let n = 1;
+    for (const id of ids) {
+        if (id === n) n++;
+        else break;
+    }
+    return n;
+}
+
+function updateId() {
+    const n = getNextId();
+    document.getElementById('idDisplay').textContent = n;
+    document.getElementById('nextId').textContent = n;
+    const st = document.getElementById('idStatus');
+    if (!currentUser) {
+        st.textContent = '🔒 Read Only';
+        st.className = 'status locked';
+    } else if (editingId) {
+        st.textContent = `✏️ #${editingId}`;
+        st.className = 'status editing';
+    } else {
+        st.textContent = '✅ Free';
+        st.className = 'status';
+    }
+}
+
+// ===================== RENDER =====================
+function render() {
+    const list = document.getElementById('fileList');
+    document.getElementById('totalFiles').textContent = files.length;
+    updateId();
+    document.getElementById('charCount').textContent = document.getElementById('codeContent').value.length + ' chars';
+
+    if (!files.length) {
+        list.innerHTML = `<div class="empty"><i class="fas fa-inbox"></i> Chưa có file nào</div>`;
+        return;
+    }
+
+    const sorted = [...files].sort((a,b) => b.id - a.id);
+    list.innerHTML = sorted.map(f => `
+        <div class="file-item" onclick="load(${f.id})">
+            <div class="icon">${getIcon(f.name)}</div>
+            <div class="info">
+                <div class="name">${esc(f.name)}</div>
+                <div class="meta">
+                    <span class="id-badge">#${f.id}</span>
+                    <span>${new Date(f.updated || f.created).toLocaleDateString()}</span>
+                    <span>${Math.round((f.content||'').length/1024*100)/100}KB</span>
+                    <span><a href="/raw/${f.id}/${f.name}" target="_blank" class="raw-link">🔗 raw</a></span>
+                </div>
+            </div>
+            <div class="actions">
+                <button onclick="event.stopPropagation();load(${f.id})" title="Sửa"><i class="fas fa-pen"></i></button>
+                <button class="del" onclick="event.stopPropagation();del(${f.id})" title="Xóa"><i class="fas fa-trash"></i></button>
+            </div>
+        </div>
+    `).join('');
+}
+
+function getIcon(name) {
+    const e = (name||'').split('.').pop().toLowerCase();
+    const map = { lua:'📜', js:'🟨', py:'🐍', html:'🌐', css:'🎨', json:'📋', txt:'📄', md:'📝', sh:'💻', go:'🐹', rs:'🦀' };
+    return map[e] || '📄';
+}
+
+function esc(t) {
+    const d = document.createElement('div');
+    d.textContent = t;
+    return d.innerHTML;
+}
+
+// ===================== CRUD =====================
+function save() {
+    if (!currentUser) { toast('🔒 Vui lòng đăng nhập để lưu!', 'err'); return; }
+    
+    const name = document.getElementById('fileName').value.trim() || 'untitled.txt';
+    const content = document.getElementById('codeContent').value;
+    if (!content.trim()) { toast('Nội dung trống!', 'err'); return; }
+
+    if (editingId) {
+        const idx = files.findIndex(f => f.id === editingId);
+        if (idx !== -1) {
+            files[idx] = { ...files[idx], name, content, updated: Date.now() };
+            toast(`✅ Đã cập nhật #${editingId}`, 'ok');
+        }
+        editingId = null;
+    } else {
+        const id = getNextId();
+        files.push({ id, name, content, created: Date.now(), updated: Date.now() });
+        toast(`✅ Đã lưu #${id}: ${name}`, 'ok');
+    }
+
+    saveData();
+    document.getElementById('codeContent').value = '';
+    document.getElementById('fileName').value = 'script.lua';
+    render();
+}
+
+function load(id) {
+    const f = files.find(x => x.id === id);
+    if (!f) return;
+    
+    if (!currentUser) {
+        // Guest: chỉ xem text thuần
+        document.getElementById('fileName').value = f.name;
+        document.getElementById('codeContent').value = f.content;
+        document.getElementById('codeContent').disabled = true;
+        document.getElementById('btnSave').disabled = true;
+        document.getElementById('idDisplay').textContent = f.id;
+        document.getElementById('idStatus').textContent = '🔒 Read Only';
+        document.getElementById('idStatus').className = 'status locked';
+        toast(`📂 Đang xem: ${f.name} (Read Only)`, 'info');
+        return;
+    }
+    
+    editingId = id;
+    document.getElementById('fileName').value = f.name;
+    document.getElementById('codeContent').value = f.content;
+    document.getElementById('codeContent').disabled = false;
+    document.getElementById('btnSave').disabled = false;
+    render();
+    document.getElementById('codeContent').focus();
+    toast(`📂 Đã mở: ${f.name}`, 'info');
+}
+
+function del(id) {
+    if (!currentUser) { toast('🔒 Cần đăng nhập để xóa!', 'err'); return; }
+    if (!confirm(`Xóa file #${id}?`)) return;
+    const f = files.find(x => x.id === id);
+    files = files.filter(x => x.id !== id);
+    saveData();
+    if (editingId === id) { editingId = null; render(); }
+    toast(`🗑️ Đã xóa: ${f?.name || 'file'}`, 'err');
+}
+
+function deleteAll() {
+    if (!currentUser) { toast('🔒 Cần đăng nhập để xóa!', 'err'); return; }
+    if (!files.length) return;
+    if (!confirm('Xóa TẤT CẢ file?')) return;
+    files = [];
+    saveData();
+    editingId = null;
+    render();
+    toast('🗑️ Đã xóa tất cả', 'err');
+}
+
+function clearEditor() {
+    if (document.getElementById('codeContent').value && !confirm('Xóa nội dung editor?')) return;
+    document.getElementById('codeContent').value = '';
+    document.getElementById('fileName').value = 'script.lua';
+    editingId = null;
+    render();
+    toast('🧹 Đã xóa editor', 'info');
+}
+
+// ===================== COPY =====================
+function copyCode() {
+    const c = document.getElementById('codeContent').value;
+    if (!c) { toast('Không có gì để copy!', 'err'); return; }
+    navigator.clipboard?.writeText(c).then(() => toast('📋 Đã copy!', 'ok'))
+        .catch(() => {
+            const ta = document.createElement('textarea');
+            ta.value = c;
+            document.body.appendChild(ta);
+            ta.select();
+            document.execCommand('copy');
+            ta.remove();
+            toast('📋 Đã copy!', 'ok');
+        });
+}
+
+// ===================== DOWNLOAD =====================
+function download() {
+    const c = document.getElementById('codeContent').value;
+    const n = document.getElementById('fileName').value || 'script.txt';
+    if (!c) { toast('Không có nội dung!', 'err'); return; }
+    const blob = new Blob([c], { type: 'text/plain' });
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = n;
+    a.click();
+    URL.revokeObjectURL(a.href);
+    toast('📥 Đã tải xuống', 'ok');
+}
+
+// ===================== SHARE =====================
+function share() {
+    const c = document.getElementById('codeContent').value;
+    const n = document.getElementById('fileName').value || 'script.txt';
+    if (!c) { toast('Không có nội dung!', 'err'); return; }
+    const data = btoa(encodeURIComponent(JSON.stringify({ name: n, content: c })));
+    const url = window.location.href.split('?')[0] + '?c=' + data;
+    document.getElementById('shareUrl').textContent = url;
+    document.getElementById('shareModal').classList.add('active');
+}
+
+function copyShare() {
+    const url = document.getElementById('shareUrl').textContent;
+    navigator.clipboard?.writeText(url).then(() => toast('🔗 Đã copy link!', 'ok'))
+        .catch(() => {
+            const ta = document.createElement('textarea');
+            ta.value = url;
+            document.body.appendChild(ta);
+            ta.select();
+            document.execCommand('copy');
+            ta.remove();
+            toast('🔗 Đã copy link!', 'ok');
+        });
+}
+
+function closeShare() {
+    document.getElementById('shareModal').classList.remove('active');
+}
+
+// ===================== TOAST =====================
+function toast(msg, type = 'info') {
+    const box = document.getElementById('toastBox');
+    const t = document.createElement('div');
+    t.className = 'toast ' + type;
+    const icons = { ok: '✅', err: '❌', info: 'ℹ️' };
+    t.innerHTML = icons[type] + ' ' + msg;
+    box.appendChild(t);
+    setTimeout(() => {
+        t.style.opacity = '0';
+        t.style.transform = 'translateX(30px)';
+        t.style.transition = '0.3s';
+        setTimeout(() => t.remove(), 300);
+    }, 2200);
+}
+
+// ===================== LOAD FROM URL =====================
+function loadFromUrl() {
+    const p = new URLSearchParams(window.location.search);
+    const d = p.get('c');
+    if (!d) return;
+    try {
+        const raw = JSON.parse(decodeURIComponent(atob(d)));
+        document.getElementById('fileName').value = raw.name || 'shared.lua';
+        document.getElementById('codeContent').value = raw.content || '';
+        toast('📂 Đã tải code từ link!', 'ok');
+        window.history.replaceState({}, document.title, window.location.pathname);
+    } catch (e) {
+        toast('Link không hợp lệ!', 'err');
+    }
+}
+
+// ===================== KEYBOARD =====================
+document.addEventListener('keydown', e => {
+    if ((e.ctrlKey || e.metaKey) && e.key === 's') { e.preventDefault(); save(); }
+    if (e.key === 'Escape') { closeLogin(); closeShare(); }
+});
+
+// ===================== AUTO =====================
+document.getElementById('codeContent').addEventListener('input', () => {
+    document.getElementById('charCount').textContent = document.getElementById('codeContent').value.length + ' chars';
+});
+
+// ===================== RAW HANDLER =====================
+// Xử lý raw link: /raw/{id}/{name}
+function handleRaw() {
+    const path = window.location.pathname;
+    const parts = path.split('/').filter(p => p);
+    
+    if (parts.length >= 2 && parts[0] === 'raw') {
+        const id = parseInt(parts[1]);
+        const name = parts.slice(2).join('/') || 'untitled.txt';
+        
+        // Lấy nội dung từ localStorage
+        let content = '';
+        try {
+            const data = localStorage.getItem('codebin_files');
+            if (data) {
+                const files = JSON.parse(data);
+                const file = files.find(f => f.id === id);
+                if (file) {
+                    content = file.content || '';
+                } else {
+                    content = `// File #${id} not found`;
+                }
+            } else {
+                content = '// No data found';
+            }
+        } catch(e) {
+            content = '// Error loading data';
+        }
+        
+        // Xóa toàn bộ HTML, chỉ hiển thị text thuần
+        document.documentElement.innerHTML = `<pre style="margin:0;padding:20px;background:#0a0a0f;color:#e4e4e7;font-family:'Courier New',monospace;font-size:14px;min-height:100vh;white-space:pre-wrap;word-break:break-all;">${content}</pre>`;
+        document.title = `Raw: ${name}`;
+    }
+}
+
+// ===================== INIT =====================
+loadData();
+loadFromUrl();
+handleRaw();
+updateUI();
+</script>
+</body>
+</html>
